@@ -1,0 +1,21 @@
+{
+  "name": "db-app",
+  "version": "0.0.1",
+  "author": "Dave Stibrany <daves@hubdoc.com>",
+  "description": "Web-based interactive DB environment for practicing SQL",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies" : {
+    "express": "",
+    "mysql": "2.0.0-alpha8"
+  },
+  "devDependencies": {
+    "jasmine-node": ""
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.6"
+  }
+}
