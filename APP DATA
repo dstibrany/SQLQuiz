@@ -1,0 +1,27 @@
+APP DATA
+
+Modules
+-------
+id, name
+
+Questions
+---------
+id, module_id (foreign key), question_number, question, answer
+
+Relations
+---------
+id, name
+
+RelationQuestionMap
+-------------------
+id, questionid (FK), relationid (FK)
+
+========================
+
+USER DATA
+
+Employees
+---------
+
+Departments
+-----------

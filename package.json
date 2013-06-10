@@ -9,7 +9,8 @@
   },
   "dependencies" : {
     "express": "",
-    "mysql": "2.0.0-alpha8"
+    "mysql": "2.0.0-alpha8",
+    "jade"
   },
   "devDependencies": {
     "jasmine-node": ""

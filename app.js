@@ -16,20 +16,25 @@ app.use(express.static(__dirname + '/public'));
 
 var correct_results;
 
+function error_handler(err, res, next) {
+    if (err.fatal) return next(err);
+    else return res.end(err.toString());
+}
+
 // Routes
-app.get('/', function(req, res, next) {
+app.get('/', function (req, res, next) {
     var correct_query = "SELECT * FROM departments;"
-    db.query(next, correct_query, function(err, rows) {
+    db.query(correct_query, function (err, rows) {
         correct_results = rows;
         res.redirect('/index.html');
         console.log(correct_results);
     });
 });
 
-app.post('/', function(req, res, next) {
+app.post('/', function (req, res, next) {
     var query = req.body.query;
-    db.query(next, query, function(err, rows) {
-        if (err) return res.end(err.toString());
+    db.query(query, function (err, rows) {
+        if (err) return error_handler(err, res, next);
         if (utils.isEqual(correct_results, rows)) {
             res.end('Correct!')
         } else {
