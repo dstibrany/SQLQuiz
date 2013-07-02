@@ -1,9 +1,38 @@
-INSERT INTO questions (module_id, question_number, question, answer) VALUES 
-    (1, 2, 'List employees who have the biggest salary in their departments', ''),
-    (1, 3, 'List departments that have less than 3 people in it', ''),
-    (1, 4, 'List all departments along with the number of people there (tricky - people often do an "inner join" leaving out empty departments)', ''),
-    (1, 5, 'List employees that don\'t have a boss in the same department', ''),
-    (1, 6, 'List all departments along with the total salary there', '')
+CREATE TABLE IF NOT EXISTS relations (
+    id mediumint NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS relationquestionmap (
+    id mediumint NOT NULL AUTO_INCREMENT,
+    relationid mediumint NOT NULL,
+    questionid mediumint NOT NULL,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (relationid) REFERENCES relations(id),
+    FOREIGN KEY (questionid) REFERENCES questions(id)
+);
+
+INSERT INTO relations (name) VALUES
+("Employees"),
+("Departments");
+
+INSERT INTO relationquestionmap (relationid, questionid) VALUES
+(1, 1),
+(2, 1),
+(1, 2),
+(2, 2),
+(1, 3),
+(2, 3),
+(1, 4),
+(2, 4),
+(1, 5),
+(2, 5),
+(1, 6),
+(2, 6);
+
 
 
 

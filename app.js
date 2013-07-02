@@ -43,7 +43,7 @@ app.post('/', function (req, res, next) {
     });
 });
 
-app.get('/module', function (req, res) {
+app.get('/modules', function (req, res) {
     db.query('SELECT * FROM Modules', function(err, rows) {
         if (err) throw err;
         res.set({'Content-Type': 'application/json'});
@@ -51,8 +51,8 @@ app.get('/module', function (req, res) {
     });
 });
 
-app.get('/module/:id', function (req, res) {
-    db.query('SELECT * FROM Modules JOIN Questions ON Modules.id = Questions.module_id AND Modules.id =' + req.params.id, function(err, rows) {
+app.get('/modules/:id/questions', function (req, res) {
+    db.query('SELECT Questions.* FROM Modules JOIN Questions ON Modules.id = Questions.module_id AND Modules.id =' + req.params.id, function (err, rows) {
         if (err) throw err;
         res.set({'Content-Type': 'application/json'});
         res.end(JSON.stringify(rows));

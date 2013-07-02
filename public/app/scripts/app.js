@@ -5,18 +5,20 @@ define([
     'jquery',
     'lodash',
     'backbone',
+    'handlebars',
 
     // Plugins.
     'plugins/backbone.layoutmanager'
 ],
 
-function($, _, Backbone) {
+function($, _, Backbone, Handlebars) {
     'use strict';
     // Provide a global location to place configuration settings and module
     // creation.
-    var app = {
+    var app = window.app = {
         // The root path to run the application.
-        root: '/'
+        root: '/',
+        models: {}
     };
 
     // Localize or create a new JavaScript Template object.
@@ -24,6 +26,8 @@ function($, _, Backbone) {
 
     // Configure LayoutManager with Backbone Boilerplate defaults.
     Backbone.LayoutManager.configure({
+        manage: true,
+        
         paths: {
             layout: 'templates/',
             template: 'templates/'
@@ -34,7 +38,7 @@ function($, _, Backbone) {
 
             if (!JST[path]) {
                 $.ajax({ url: app.root + path, async: false }).then(function(contents) {
-                    JST[path] = _.template(contents);
+                    JST[path] = Handlebars.compile(contents);
                 });
             }
 
