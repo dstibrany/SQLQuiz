@@ -12,7 +12,7 @@ var utils   = require(__dirname + '/lib/utils');
 app.use(express.logger());
 app.use(express.bodyParser());
 app.use(app.router);
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public/app'));
 
 var correct_results;
 
@@ -40,6 +40,22 @@ app.post('/', function (req, res, next) {
         } else {
             res.end('Incorrect');
         }
+    });
+});
+
+app.get('/module', function (req, res) {
+    db.query('SELECT * FROM Modules', function(err, rows) {
+        if (err) throw err;
+        res.set({'Content-Type': 'application/json'});
+        res.end(JSON.stringify(rows));
+    });
+});
+
+app.get('/module/:id', function (req, res) {
+    db.query('SELECT * FROM Modules JOIN Questions ON Modules.id = Questions.module_id AND Modules.id =' + req.params.id, function(err, rows) {
+        if (err) throw err;
+        res.set({'Content-Type': 'application/json'});
+        res.end(JSON.stringify(rows));
     });
 });
 
