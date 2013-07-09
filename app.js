@@ -4,6 +4,7 @@ fs.readdirSync('env').forEach(function(file) {
 });
 var util    = require('util');
 var express = require('express');
+var async   = require('async');
 var app     = express();
 var db      = require(__dirname +'/lib/db');
 var utils   = require(__dirname + '/lib/utils');
@@ -44,18 +45,50 @@ app.post('/', function (req, res, next) {
 });
 
 app.get('/modules', function (req, res) {
-    db.query('SELECT * FROM Modules', function(err, rows) {
+    db.query('SELECT * FROM Modules', function (err, rows) {
         if (err) throw err;
-        res.set({'Content-Type': 'application/json'});
-        res.end(JSON.stringify(rows));
+        res.json(rows);
     });
 });
 
 app.get('/modules/:id/questions', function (req, res) {
-    db.query('SELECT Questions.* FROM Modules JOIN Questions ON Modules.id = Questions.module_id AND Modules.id =' + req.params.id, function (err, rows) {
+    var sql = 'SELECT Questions.*\
+               FROM Modules JOIN Questions\
+               ON Modules.id = Questions.module_id\
+               AND Modules.id = ?';
+
+    db.query(sql, [req.params.id], function (err, rows) {
         if (err) throw err;
-        res.set({'Content-Type': 'application/json'});
-        res.end(JSON.stringify(rows));
+        res.json(rows);
+    });
+});
+
+app.get('/modules/:id/relations', function (req, res) {
+    var out = [];
+    var sql = 'SELECT relations.name\
+               FROM relationmodulemap JOIN relations\
+               ON relationmodulemap.relation_id = relations.id\
+               WHERE relationmodulemap.module_id = ?';
+
+    db.query(sql, [req.params.id], function (err, rows) {
+        if (err) throw err;
+        async.forEach(rows, function (row, cb) {
+            db.query('describe ' + row.name, function (err, inner_rows) {
+                if (err) return cb(err);
+                var relation = {};
+                inner_rows.forEach(function (inner_row) {
+                    relation[inner_row.Field] = {
+                        key: inner_row.Key === 'MUL' ? 'FK' : inner_row.Key
+                    };
+                });
+                relation['__name__'] = row.name;
+                out.push(relation)
+                cb(null);
+            });        
+        }, function (err) {
+            if (err) throw err;
+            res.json(out);
+        })
     });
 });
 

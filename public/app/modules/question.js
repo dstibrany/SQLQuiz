@@ -45,5 +45,4 @@ function(app) {
     })
 
     return Question;
-
 });

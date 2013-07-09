@@ -5,12 +5,13 @@
   "description": "Web-based interactive DB environment for practicing SQL",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:dstibrany/SQLQuiz.git"
   },
   "dependencies" : {
     "express": "",
-    "mysql": "2.0.0-alpha8",
-    "jade"
+    "mysql"  : "2.0.0-alpha8",
+    "jade"   : "",
+    "async"  : ""
   },
   "devDependencies": {
     "jasmine-node": ""
