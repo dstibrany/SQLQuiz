@@ -33,6 +33,10 @@ function(app) {
     Question.Views.Layout = Backbone.View.extend({
         template: 'question',
 
+        events: {
+            'click #submit-answer': 'submitAnswer'
+        },
+
         initialize: function() {
             this.collection.on('reset', this.render, this);
             this.collection.on('change:question', this.render, this);
@@ -40,8 +44,21 @@ function(app) {
 
         serialize: function() {
             var question = this.collection.at(this.collection.currentQuestion - 1);
-            return question ? question.toJSON() : {}
+            return question ? question.toJSON() : {};
+        },
+        
+        submitAnswer: function() {
+            var model = this.getModel();
+            $.post('/checkAnswer/' + model.get('id'), {
+                userAnswer: this.$('textarea').val(),
+                realAnswer: model.get('answer')
+            });
+        },
+
+        getModel: function() {
+            return this.collection.at(this.collection.currentQuestion - 1);
         }
+
     })
 
     return Question;

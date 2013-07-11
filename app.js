@@ -15,33 +15,39 @@ app.use(express.bodyParser());
 app.use(app.router);
 app.use(express.static(__dirname + '/public/app'));
 
-var correct_results;
-
 function error_handler(err, res, next) {
     if (err.fatal) return next(err);
     else return res.end(err.toString());
 }
 
 // Routes
-app.get('/', function (req, res, next) {
-    var correct_query = "SELECT * FROM departments;"
-    db.query(correct_query, function (err, rows) {
-        correct_results = rows;
-        res.redirect('/index.html');
-        console.log(correct_results);
-    });
-});
-
-app.post('/', function (req, res, next) {
-    var query = req.body.query;
-    db.query(query, function (err, rows) {
+app.post('/checkAnswer/:questionid', function (req, res, next) {
+    async.parallel([
+        function (cb) {
+            db.query(req.body.realAnswer, function (err, rows) {
+                if (err) return cb(err);
+                cb(null, rows);
+            });
+        },
+        function (cb) {
+            db.query(req.body.userAnswer, function (err, rows) {
+                if (err) return cb(err);
+                cb(null, rows);
+            });
+        }
+    ], 
+    function (err, results) {
         if (err) return error_handler(err, res, next);
-        if (utils.isEqual(correct_results, rows)) {
+        if (utils.isEqual(results[0], results[1])) {
             res.end('Correct!')
         } else {
             res.end('Incorrect');
         }
     });
+    
+
+
+    db.query(req.body.userAnswer)
 });
 
 app.get('/modules', function (req, res) {
