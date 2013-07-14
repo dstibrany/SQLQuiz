@@ -1,0 +1,10 @@
+<div class="pagination">
+    <ul>
+        <li class="previous"><a href="#fakelink" class="fui-arrow-left" data-bypass></a></li>
+        {{#each this}}
+        <li {{#if isActive}}class="active"{{/if}}><a href="#fakelink">{{questionNumber}}</a></li>
+        {{/each}}
+        <li class="next"><a href="#fakelink" class="fui-arrow-right" data-bypass></a></li>
+    </ul>
+</div>
+<div id="question-hook"></div>

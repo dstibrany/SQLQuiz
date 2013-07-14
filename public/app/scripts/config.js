@@ -29,6 +29,7 @@ require.config({
         handlebars: {
             exports: 'Handlebars'
         }
+
     }
 
 });
