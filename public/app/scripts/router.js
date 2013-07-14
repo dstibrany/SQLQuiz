@@ -28,16 +28,36 @@ function (app, Backbone, Module, Question, Relation) {
             }).render();
 
             modules.fetch();
-            questions.fetch();
-            relations.fetch();
         },
 
         routes: {
-            '': 'index'
+            '': 'index',
+            'module/:id': 'loadModule',
+            'module/:id/question/:questionNumber': 'loadQuestion'
         },
 
         index: function() {
             console.log('index route');
+        },
+
+        loadModule: function(id) {
+            // TODO handle bad ids
+            app.state.module = id; 
+            app.models.questions.setURL(id);
+            app.models.questions.fetch();
+            app.models.relations.setURL(id);
+            app.models.relations.fetch();
+        },
+
+        loadQuestion: function(module_id, question_number) {
+            // TODO handle bad ids
+            app.state.module = module_id;
+            app.models.questions.setURL(module_id);
+            app.models.questions.fetch({ silent: true }).done(function() {
+                app.models.questions.trigger('reset', +question_number);
+            });
+            app.models.relations.setURL(module_id);
+            app.models.relations.fetch();  
         }
     });
 

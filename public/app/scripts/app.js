@@ -18,7 +18,8 @@ function($, _, Backbone, Handlebars) {
     var app = window.app = {
         // The root path to run the application.
         root: '/',
-        models: {}
+        models: {},
+        state: {}
     };
 
     // Localize or create a new JavaScript Template object.

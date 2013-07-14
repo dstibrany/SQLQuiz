@@ -11,12 +11,14 @@ function(app, Results) {
 
     Question.Collection = Backbone.Collection.extend({
         model: Question.Model,
-        url: '/modules/1/questions',
+
+        url: '/modules/1/questions', // 1 is just a placeholder and will be dynamically replaced
         currentQuestion: 1,
 
         initialize: function() {
-            this.on('reset', function() {
-                this.currentQuestion = 1;
+            this.on('reset', function (question_number) {
+                question_number = typeof question_number === 'number' ? question_number : 1;
+                this.currentQuestion = question_number;
             }, this);
         },
 
@@ -33,6 +35,10 @@ function(app, Results) {
         prevQuestion: function() {
             this.currentQuestion = --this.currentQuestion % (this.length + 1) || this.length;
             this.trigger('change:question');
+        },
+
+        setURL: function(module_id) {
+            this.url = this.url.replace(/\d+/, module_id);
         }
     });
 
@@ -41,9 +47,6 @@ function(app, Results) {
 
         events: {
             'click #submit-answer': 'submitAnswer'
-        },
-
-        initialize: function() {
         },
 
         beforeRender: function() {
@@ -79,7 +82,7 @@ function(app, Results) {
 
         initialize: function() {
             this.collection.on('reset', this.render, this);
-            this.collection.on('change:question', this.render, this);
+            this.collection.on('change:question', this.changeRoute, this);
         },
 
         beforeRender: function() {
@@ -101,6 +104,11 @@ function(app, Results) {
             return questions;
         },
 
+        changeRoute: function() {
+            var route = '/module/' + app.state.module + '/question/' + this.collection.currentQuestion;
+            Backbone.history.navigate(route, { trigger: true });
+        },
+
         nextQuestion: function(e) {
             e.preventDefault();
             this.collection.nextQuestion();
@@ -115,7 +123,7 @@ function(app, Results) {
             e.preventDefault();
             var $parent = $(e.target).parent();
             if (!$parent.hasClass('previous') && !$parent.hasClass('next')) {
-                this.collection.selectQuestion(+$(e.target).text());
+                this.collection.selectQuestion($(e.target).text());
             }
         }
     })

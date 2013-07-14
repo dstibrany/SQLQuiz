@@ -10,7 +10,11 @@ function(app) {
 
     Relation.Collection = Backbone.Collection.extend({
         model: Relation.Model,
-        url: '/modules/1/relations'
+        url: '/modules/1/relations', // 1 is just a placeholder and will be dynamically replaced
+
+        setURL: function(module_id) {
+            this.url = this.url.replace(/\d+/, module_id);
+        }
     });
 
     Relation.Views.List = Backbone.View.extend({
