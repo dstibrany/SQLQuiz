@@ -32,16 +32,12 @@ function(app) {
     Relation.Views.Item = Backbone.View.extend({
         template: 'relation',
 
-        initialize: function() {
-        },
-
         serialize: function() {
             var out = {};
             var data = this.model.toJSON();
             out.relation = _.clone(data);
             out.name = data.__name__;
             delete out.relation.__name__;
-            console.log(out);
             return out;
         }
     })

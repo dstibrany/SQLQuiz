@@ -17,7 +17,13 @@ app.use(express.static(__dirname + '/public/app'));
 
 function error_handler(err, res, next) {
     if (err.fatal) return next(err);
-    else return res.end(err.toString());
+    if (err.userError) {
+        res.json({ user_error: err.message });
+    } else {
+        res.statusCode = 500;
+        console.log('Database error: ', err);
+        res.json({ internal_error: 'Database error' });
+    }
 }
 
 // Routes
@@ -31,45 +37,52 @@ app.post('/checkAnswer/:questionid', function (req, res, next) {
         },
         function (cb) {
             db.query(req.body.userAnswer, function (err, rows) {
-                if (err) return cb(err);
+                if (err) {
+                    err.userError = true;
+                    return cb(err);
+                }
+                    
                 cb(null, rows);
             });
         }
     ], 
     function (err, results) {
         if (err) return error_handler(err, res, next);
+        var out = {
+            correctResults: results[0],
+            userResults   : results[1],
+        };
+
         if (utils.isEqual(results[0], results[1])) {
-            res.end('Correct!')
+            out.correct = true;
         } else {
-            res.end('Incorrect');
+            out.correct = false;
         }
+
+        res.json(out);
     });
-    
-
-
-    db.query(req.body.userAnswer)
 });
 
-app.get('/modules', function (req, res) {
+app.get('/modules', function (req, res, next) {
     db.query('SELECT * FROM Modules', function (err, rows) {
-        if (err) throw err;
+        if (err) return error_handler(err, res, next);
         res.json(rows);
     });
 });
 
-app.get('/modules/:id/questions', function (req, res) {
+app.get('/modules/:id/questions', function (req, res, next) {
     var sql = 'SELECT Questions.*\
                FROM Modules JOIN Questions\
                ON Modules.id = Questions.module_id\
                AND Modules.id = ?';
 
     db.query(sql, [req.params.id], function (err, rows) {
-        if (err) throw err;
+        if (err) return error_handler(err, res, next);
         res.json(rows);
     });
 });
 
-app.get('/modules/:id/relations', function (req, res) {
+app.get('/modules/:id/relations', function (req, res, next) {
     var out = [];
     var sql = 'SELECT relations.name\
                FROM relationmodulemap JOIN relations\
@@ -77,7 +90,7 @@ app.get('/modules/:id/relations', function (req, res) {
                WHERE relationmodulemap.module_id = ?';
 
     db.query(sql, [req.params.id], function (err, rows) {
-        if (err) throw err;
+        if (err) return error_handler(err, res, next);
         async.forEach(rows, function (row, cb) {
             db.query('describe ' + row.name, function (err, inner_rows) {
                 if (err) return cb(err);
@@ -92,7 +105,7 @@ app.get('/modules/:id/relations', function (req, res) {
                 cb(null);
             });        
         }, function (err) {
-            if (err) throw err;
+            if (err) return error_handler(err, res, next);
             res.json(out);
         })
     });

@@ -1,8 +1,9 @@
 define([
-  "app"
+  "app",
+  "../modules/results"
 ],
 
-function(app) {
+function(app, Results) {
 
     var Question = app.module();
 
@@ -42,17 +43,27 @@ function(app) {
             this.collection.on('change:question', this.render, this);
         },
 
+        beforeRender: function() {
+            if (this.collection.length) {
+                this.setView('#results-hook', new Results.Views.Layout({
+                    model: new Results.Model({
+                        id: this.getModel().get('id')
+                    })
+                }));
+            }
+        },
+
         serialize: function() {
             var question = this.collection.at(this.collection.currentQuestion - 1);
             return question ? question.toJSON() : {};
         },
         
         submitAnswer: function() {
-            var model = this.getModel();
-            $.post('/checkAnswer/' + model.get('id'), {
+            app.trigger('submit:answer', {
                 userAnswer: this.$('textarea').val(),
-                realAnswer: model.get('answer')
-            });
+                realAnswer: this.getModel().get('answer')
+            })
+            
         },
 
         getModel: function() {

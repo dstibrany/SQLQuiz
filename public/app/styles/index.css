@@ -1,2 +1,7 @@
-@import "h5bp.css";
-@import "bootstrap.css";
+#results {
+    display: none;
+}
+
+#user-error {
+
+}

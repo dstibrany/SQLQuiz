@@ -1,0 +1,18 @@
+{{#unless empty}}
+    <h3>Results:</h3>
+    {{#if user_error}}
+        <div id="user-error">{{user_error}}</div>
+    {{else}}
+        <div id="answer-status">
+        {{#if correct}}
+            Correct!
+        {{else}}
+            Incorrect
+        {{/if}}
+        </div>
+        <h4>User Results:</h4>
+        <div id="user-results">{{userResults}}</div>
+        <h4>Correct Results:</h4>
+        <div id="correct-results">{{correctResults}}</div>
+    {{/if}}
+{{/unless}}
