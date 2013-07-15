@@ -11,8 +11,46 @@
         {{/if}}
         </div>
         <h4>User Results:</h4>
-        <div id="user-results">{{userResults}}</div>
+        <div id="user-results">
+            <table>
+                <tbody>
+                    {{#if userColumns}}
+                    <tr>
+                        {{#each userColumns}}
+                        <th>{{this}}</th>
+                        {{/each}}
+                    </tr>
+                    {{/if}}
+                    {{#each userResults}}
+                    <tr>
+                        {{#each this}}
+                        <td>{{this}}</td>
+                        {{/each}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
         <h4>Correct Results:</h4>
-        <div id="correct-results">{{correctResults}}</div>
+        <div id="correct-results">
+            <table>
+                <tbody>
+                    {{#if correctColumns}}
+                    <tr>
+                        {{#each correctColumns}}
+                        <th>{{this}}</th>
+                        {{/each}}
+                    </tr>
+                    {{/if}}
+                    {{#each correctResults}}
+                    <tr>
+                        {{#each this}}
+                        <td>{{this}}</td>
+                        {{/each}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
     {{/if}}
 {{/unless}}

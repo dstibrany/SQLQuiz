@@ -64,7 +64,7 @@ function(app, Results) {
         submitAnswer: function() {
             app.trigger('submit:answer', {
                 userAnswer: this.$('textarea').val(),
-                realAnswer: this.getModel().get('answer')
+                realAnswer: this.model.get('answer')
             })
             
         }

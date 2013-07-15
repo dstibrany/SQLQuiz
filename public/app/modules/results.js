@@ -28,8 +28,22 @@ function(app) {
 
         serialize: function() {
             var data = this.model.toJSON();
+            console.log(data);
             if (!data.userAnswer) {
                 data.empty = true;
+                return data;
+            }
+
+            if (data.correctResults && data.correctResults.length > 0) {
+                data.correctColumns = Object.keys(data.correctResults[0]);
+            } else {
+                data.correctResults.push({empty: 'No results found.'})
+            }
+
+            if (data.userResults && data.userResults.length > 0) {
+                data.userColumns = Object.keys(data.userResults[0]);
+            } else {
+                data.userResults.push({empty: 'No results found.'})
             }
             return data;
         }
