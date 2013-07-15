@@ -19,7 +19,9 @@ function($, _, Backbone, Handlebars) {
         // The root path to run the application.
         root: '/',
         models: {},
-        state: {}
+        state: {
+            module: null
+        }
     };
 
     // Localize or create a new JavaScript Template object.

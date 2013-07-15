@@ -11,7 +11,7 @@ function (app, Backbone, Module, Question, Relation) {
     // Defining the application router, you can attach sub routers here.
     var Router = Backbone.Router.extend({
         initialize: function() {
-            var modules = app.models.modules = new Module.Collection();
+            var modules   = app.models.modules   = new Module.Collection();
             var questions = app.models.questions = new Question.Collection();
             var relations = app.models.relations = new Relation.Collection();
 

@@ -1,3 +1,43 @@
+/* TURQUOISE #1ABC9C */
+/* CARROT #E67E22 */
+/* CLOUDS #ECF0F1 */
+/* PETER RIVER #3498DB */
+/* SUN FLOWER #F1C40F */
+/* SILVER #BDC3C7 */
+/* BELIZE HOLE #2980B9 */
+
+
+body {
+    background: #ECF0F1;
+}
+
+.pagination ul {
+    background: #1ABC9C;
+}
+.pagination ul li > a {
+    background: #1ABC9C;
+    border: 5px solid #1ABC9C;
+}
+.pagination ul li > a:hover {
+    background: #BDC3C7;
+    border-color: #BDC3C7;
+}
+.pagination ul li.active > a {
+    background-color: #BDC3C7;
+    border-color: #BDC3C7;
+    color: #fff;
+}
+.pagination ul li.active > a:hover {
+    background-color: #BDC3C7;
+    border-color: #BDC3C7;
+    color: #fff;
+}
+.pagination ul li > a.correct {
+    background: #34495E;
+    border: 5px solid #34495E;
+}
+
+
 #results {
     display: none;
 }

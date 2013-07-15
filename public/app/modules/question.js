@@ -98,7 +98,8 @@ function(app, Results) {
             for (var i = 1, len = this.collection.length; i <= len; i++ ) {
                 questions.push({
                     questionNumber: i,
-                    isActive: i === this.collection.currentQuestion ? true : false
+                    isActive: i === this.collection.currentQuestion ? true : false,
+                    correct: this.collection.at(i - 1).get('correct')
                 })
             }
             return questions;
@@ -106,7 +107,8 @@ function(app, Results) {
 
         changeRoute: function() {
             var route = '/module/' + app.state.module + '/question/' + this.collection.currentQuestion;
-            Backbone.history.navigate(route, { trigger: true });
+            Backbone.history.navigate(route);
+            this.render();
         },
 
         nextQuestion: function(e) {
