@@ -1,12 +1,14 @@
 var fs      = require('fs');
-fs.readdirSync('env').forEach(function(file) {
+fs.readdirSync('env').forEach(function (file) {
     process.env[file] = fs.readFileSync('env/' + file).toString();
 });
+
 var util    = require('util');
 var express = require('express');
 var async   = require('async');
 var app     = express();
-var db      = require(__dirname +'/lib/db');
+var db      = require(__dirname +'/lib/app_db');
+var User_DB = require(__dirname +'/lib/user_db');
 var utils   = require(__dirname + '/lib/utils');
 
 // Middleware
@@ -14,6 +16,8 @@ app.use(express.logger());
 app.use(express.bodyParser());
 app.use(app.router);
 app.use(express.static(__dirname + '/public/app'));
+
+var user_db_map = {};
 
 function error_handler(err, res, next) {
     if (err.fatal) return next(err);
@@ -23,6 +27,15 @@ function error_handler(err, res, next) {
         res.statusCode = 500;
         console.log('Database error: ', err);
         res.json({ internal_error: 'Database error' });
+    }
+}
+
+function destroy_user_db(uuid) {
+    console.log(uuid);
+    var old_db = user_db_map[uuid];
+    if (old_db) {
+        old_db.close();
+        delete user_db_map[req.cookies.uuid];
     }
 }
 
@@ -67,6 +80,26 @@ app.get('/modules', function (req, res, next) {
     db.query('SELECT * FROM Modules', function (err, rows) {
         if (err) return error_handler(err, res, next);
         res.json(rows);
+    });
+});
+
+app.get('/module/:id', function (req, res, next) {
+    if (req.cookies && req.cookies.uuid) {
+        destroy_user_db(req.cookies.uuid);
+    }
+
+    var uuid = utils.uuid();
+    var user_db = new User_DB(req.params.id);
+    
+    user_db_map[uuid] = user_db;
+
+    user_db.load(function (err) {
+        if (err) {
+            console.log(err);
+            return res.send(500);
+        }
+        res.cookie('uuid', uuid);
+        res.send(200);
     });
 });
 
@@ -115,9 +148,3 @@ app.listen(8999, function() {
     console.log('Listening on port 8999');
 });
 
-// Show question on page
-// take user input
-// process user input as SQL
-// check if answer is correct
-// if incorrect, display an error
-// get next question

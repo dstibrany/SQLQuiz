@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS questions (
     FOREIGN KEY (module_id) REFERENCES modules(id)
 );
 
+-- module1 data
 INSERT INTO modules (name) VALUES
 ("Jitbit's SQL interview questions");
 

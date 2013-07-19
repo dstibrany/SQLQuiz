@@ -43,10 +43,15 @@ function (app, Backbone, Module, Question, Relation) {
         loadModule: function(id) {
             // TODO handle bad ids
             app.state.module = id; 
+            
+            $.get('/module/' + id).done(function (data) {
+                console.log(data);
+            })
+            
             app.models.questions.setURL(id);
             app.models.questions.fetch();
-            app.models.relations.setURL(id);
-            app.models.relations.fetch();
+            // app.models.relations.setURL(id);
+            // app.models.relations.fetch();
         },
 
         loadQuestion: function(module_id, question_number) {
