@@ -44,6 +44,7 @@ function(app, Results) {
 
     Question.Views.Item = Backbone.View.extend({
         template: 'question',
+        className: 'question-item',
 
         events: {
             'click #submit-answer': 'submitAnswer'
@@ -87,7 +88,7 @@ function(app, Results) {
 
         beforeRender: function() {
             if (this.collection.length) {
-                this.setView('#question-hook', new Question.Views.Item({
+                this.insertView(new Question.Views.Item({
                     model: this.collection.at(this.collection.currentQuestion - 1)
                 }));
             }

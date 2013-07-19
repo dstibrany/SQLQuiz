@@ -37,6 +37,15 @@ body {
     border: 5px solid #34495E;
 }
 
+.question-item textarea {
+    width: 100%;
+    height: 150px;
+    padding: 0;
+}
+
+.question-item button {
+    width: 100px;
+}
 
 #results {
     display: none;
