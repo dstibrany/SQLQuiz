@@ -33,10 +33,8 @@ function(app) {
 
         serialize: function() {
             var data = this.model.toJSON();
-            console.log(data);
             if (!data.userAnswer) {
                 data.empty = true;
-                console.log('ok');
                 return data;
             }
 
@@ -55,7 +53,6 @@ function(app) {
         },
 
         cleanup: function() {
-            console.log('cleanup');
             app.off('submit:answer');
         }
 

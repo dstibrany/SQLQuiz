@@ -50,9 +50,9 @@ function (app, Backbone, Module, Question, Relation) {
             $.get('/module/' + id).done(function (data) {
                 console.log(data);
             })
-            
+    
             app.models.questions.setURL(id);
-            app.models.questions.fetch();
+            app.models.questions.fetch({ reset: true });
             // app.models.relations.setURL(id);
             // app.models.relations.fetch();
         },

@@ -42,45 +42,6 @@ function(app, Results) {
         }
     });
 
-    Question.Views.Item = Backbone.View.extend({
-        template: 'question',
-        className: 'question-item',
-
-        events: {
-            'click #submit-answer': 'submitAnswer'
-        },
-
-        beforeRender: function() {
-            console.log(this.resultsView);
-            if (this.resultsView) {
-                console.log('resultsview');
-                this.resultsView.cleanup();
-            }
-            this.resultsView = new Results.Views.Layout({
-                model: new Results.Model({
-                    id: this.model.get('id')
-                })
-            });
-            this.insertView('#results-hook', this.resultsView);
-        },
-
-        serialize: function() {
-            return this.model.toJSON();
-        },
-        
-        submitAnswer: function() {
-            app.trigger('submit:answer', {
-                userAnswer: this.$('textarea').val(),
-                realAnswer: this.model.get('answer')
-            })
-            
-        }, 
-
-        cleanup: function() {
-            console.log('ok cleanup');
-        }
-    });
-
     Question.Views.Layout = Backbone.View.extend({
         template: 'questionlayout',
         className: 'question-layout',
@@ -92,8 +53,8 @@ function(app, Results) {
         },
 
         initialize: function() {
-            this.collection.on('reset', this.render, this);
-            this.collection.on('change:question', this.changeRoute, this);
+            this.listenTo(this.collection, 'reset', this.render);
+            this.listenTo(this.collection, 'change:question', this.changeRoute);
         },
 
         beforeRender: function() {
@@ -139,7 +100,37 @@ function(app, Results) {
                 this.collection.selectQuestion($(e.target).text());
             }
         }
-    })
+    });
+
+    Question.Views.Item = Backbone.View.extend({
+        template: 'question',
+        className: 'question-item',
+
+        events: {
+            'click #submit-answer': 'submitAnswer'
+        },
+
+        beforeRender: function() {
+            this.setView('#results-hook', new Results.Views.Layout({
+                model: new Results.Model({
+                    id: this.model.get('id')
+                })
+            }));
+        },
+
+        serialize: function() {
+            return this.model.toJSON();
+        },
+        
+        submitAnswer: function() {
+            app.trigger('submit:answer', {
+                userAnswer: this.$('textarea').val(),
+                realAnswer: this.model.get('answer')
+            })
+            
+        }
+    });
+
 
     return Question;
 });
