@@ -31,8 +31,7 @@ function error_handler(err, res, next) {
     }
 }
 
-function destroy_user_db(uuid) {
-    console.log(uuid);
+function destroy_user_db(req, uuid) {
     var old_db = user_db_map[uuid];
     if (old_db) {
         old_db.close();
@@ -42,11 +41,8 @@ function destroy_user_db(uuid) {
 
 // Routes
 app.post('/checkAnswer/:questionid', function (req, res, next) {
-    console.log(req.cookies);
     var uuid = req.cookies && req.cookies.uuid;
-    console.log(uuid);
     var user_db = user_db_map[uuid];
-    console.log(user_db);
     if (!user_db) return res.send(500);
 
     async.parallel([
@@ -93,7 +89,7 @@ app.get('/modules', function (req, res, next) {
 
 app.get('/module/:id', function (req, res, next) {
     if (req.cookies && req.cookies.uuid) {
-        destroy_user_db(req.cookies.uuid);
+        destroy_user_db(req, req.cookies.uuid);
     }
 
     var uuid = utils.uuid();
