@@ -7,11 +7,7 @@ function(app) {
     var Results = app.module();
 
     Results.Model = Backbone.Model.extend({
-        urlRoot: '/checkAnswer',
-
-        initialize: function() {
-            this.on('')
-        }
+        urlRoot: '/checkAnswer'
     });
 
     Results.Views.Layout = Backbone.View.extend({
@@ -37,23 +33,30 @@ function(app) {
 
         serialize: function() {
             var data = this.model.toJSON();
+            console.log(data);
             if (!data.userAnswer) {
                 data.empty = true;
+                console.log('ok');
                 return data;
             }
 
             if (data.correctResults && data.correctResults.length > 0) {
                 data.correctColumns = Object.keys(data.correctResults[0]);
-            } else {
+            } else if (data.correctResults) {
                 data.correctResults.push({empty: 'No results found.'})
             }
 
             if (data.userResults && data.userResults.length > 0) {
                 data.userColumns = Object.keys(data.userResults[0]);
-            } else {
+            } else if (data.userResults) {
                 data.userResults.push({empty: 'No results found.'})
             }
             return data;
+        },
+
+        cleanup: function() {
+            console.log('cleanup');
+            app.off('submit:answer');
         }
 
     })

@@ -14,6 +14,7 @@ var utils   = require(__dirname + '/lib/utils');
 // Middleware
 app.use(express.logger());
 app.use(express.bodyParser());
+app.use(express.cookieParser());
 app.use(app.router);
 app.use(express.static(__dirname + '/public/app'));
 
@@ -41,15 +42,22 @@ function destroy_user_db(uuid) {
 
 // Routes
 app.post('/checkAnswer/:questionid', function (req, res, next) {
+    console.log(req.cookies);
+    var uuid = req.cookies && req.cookies.uuid;
+    console.log(uuid);
+    var user_db = user_db_map[uuid];
+    console.log(user_db);
+    if (!user_db) return res.send(500);
+
     async.parallel([
         function (cb) {
-            db.query(req.body.realAnswer, function (err, rows) {
+            user_db.query(req.body.realAnswer, function (err, rows) {
                 if (err) return cb(err);
                 cb(null, rows);
             });
         },
         function (cb) {
-            db.query(req.body.userAnswer, function (err, rows) {
+            user_db.query(req.body.userAnswer, function (err, rows) {
                 if (err) {
                     err.userError = true;
                     return cb(err);
@@ -63,7 +71,7 @@ app.post('/checkAnswer/:questionid', function (req, res, next) {
         if (err) return error_handler(err, res, next);
         var out = {
             correctResults: results[0],
-            userResults   : results[1],
+            userResults:    results[1],
         };
 
         if (utils.isEqual(results[0], results[1])) {
@@ -99,7 +107,7 @@ app.get('/module/:id', function (req, res, next) {
             return res.send(500);
         }
         res.cookie('uuid', uuid);
-        res.send(200);
+        res.send(user_db_map);
     });
 });
 

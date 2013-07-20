@@ -51,11 +51,17 @@ function(app, Results) {
         },
 
         beforeRender: function() {
-            this.setView('#results-hook', new Results.Views.Layout({
+            console.log(this.resultsView);
+            if (this.resultsView) {
+                console.log('resultsview');
+                this.resultsView.cleanup();
+            }
+            this.resultsView = new Results.Views.Layout({
                 model: new Results.Model({
                     id: this.model.get('id')
                 })
-            }));
+            });
+            this.insertView('#results-hook', this.resultsView);
         },
 
         serialize: function() {
@@ -68,6 +74,10 @@ function(app, Results) {
                 realAnswer: this.model.get('answer')
             })
             
+        }, 
+
+        cleanup: function() {
+            console.log('ok cleanup');
         }
     });
 
