@@ -20,13 +20,12 @@ app.use(express.static(__dirname + '/public/app'));
 
 var user_db_map = {};
 
-function error_handler(err, res, next) {
-    if (err.fatal) return next(err);
+function error_handler(err, res) {
     if (err.userError) {
         res.json({ user_error: err.message });
     } else {
         res.statusCode = 500;
-        console.log('Database error: ', err);
+        console.log('INTERNAL ERROR: ', err);
         res.json({ internal_error: 'Database error' });
     }
 }
@@ -40,7 +39,7 @@ function destroy_user_db(req, uuid) {
 }
 
 // Routes
-app.post('/checkAnswer/:questionid', function (req, res, next) {
+app.post('/checkAnswer/:questionid', function (req, res) {
     var uuid = req.cookies && req.cookies.uuid;
     var user_db = user_db_map[uuid];
     if (!user_db) return res.send(500);
@@ -64,7 +63,7 @@ app.post('/checkAnswer/:questionid', function (req, res, next) {
         }
     ], 
     function (err, results) {
-        if (err) return error_handler(err, res, next);
+        if (err) return error_handler(err, res);
         var out = {
             correctResults: results[0],
             userResults:    results[1],
@@ -80,14 +79,14 @@ app.post('/checkAnswer/:questionid', function (req, res, next) {
     });
 });
 
-app.get('/modules', function (req, res, next) {
+app.get('/modules', function (req, res) {
     db.query('SELECT * FROM Modules', function (err, rows) {
-        if (err) return error_handler(err, res, next);
+        if (err) return error_handler(err, res);
         res.json(rows);
     });
 });
 
-app.get('/module/:id', function (req, res, next) {
+app.get('/module/:id', function (req, res) {
     if (req.cookies && req.cookies.uuid) {
         destroy_user_db(req, req.cookies.uuid);
     }
@@ -98,28 +97,25 @@ app.get('/module/:id', function (req, res, next) {
     user_db_map[uuid] = user_db;
 
     user_db.load(function (err) {
-        if (err) {
-            console.log(err);
-            return res.send(500);
-        }
+        if (err) return error_handler(err, res);
         res.cookie('uuid', uuid);
-        res.send(user_db_map);
+        res.send(200);
     });
 });
 
-app.get('/modules/:id/questions', function (req, res, next) {
+app.get('/modules/:id/questions', function (req, res) {
     var sql = 'SELECT Questions.*\
                FROM Modules JOIN Questions\
                ON Modules.id = Questions.module_id\
                AND Modules.id = ?';
 
     db.query(sql, [req.params.id], function (err, rows) {
-        if (err) return error_handler(err, res, next);
+        if (err) return error_handler(err, res);
         res.json(rows);
     });
 });
 
-app.get('/modules/:id/relations', function (req, res, next) {
+app.get('/modules/:id/relations', function (req, res) {
     var out = [];
     var sql = 'SELECT relations.name\
                FROM relationmodulemap JOIN relations\
@@ -127,7 +123,7 @@ app.get('/modules/:id/relations', function (req, res, next) {
                WHERE relationmodulemap.module_id = ?';
 
     db.query(sql, [req.params.id], function (err, rows) {
-        if (err) return error_handler(err, res, next);
+        if (err) return error_handler(err, res);
         async.forEach(rows, function (row, cb) {
             db.query('describe ' + row.name, function (err, inner_rows) {
                 if (err) return cb(err);
@@ -142,7 +138,7 @@ app.get('/modules/:id/relations', function (req, res, next) {
                 cb(null);
             });        
         }, function (err) {
-            if (err) return error_handler(err, res, next);
+            if (err) return error_handler(err, res);
             res.json(out);
         })
     });
