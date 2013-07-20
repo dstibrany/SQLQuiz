@@ -15,7 +15,10 @@ function (app, Backbone, Module, Question, Relation) {
             var questions = app.models.questions = new Question.Collection();
             var relations = app.models.relations = new Relation.Collection();
 
-            app.useLayout("main-layout").setViews({
+            var main = app.useLayout("main-layout");
+            $('#main').append(main.$el)
+            
+            main.setViews({
                 "#module": new Module.Views.Layout({
                     collection: modules
                 }),

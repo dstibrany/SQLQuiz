@@ -8,12 +8,19 @@ require.config({
         // JavaScript folders.
         libs: '../scripts/libs',
         plugins: '../scripts/plugins',
+        components: '../components',
 
         // Libraries.
-        jquery: '../scripts/libs/jquery',
-        lodash: '../scripts/libs/lodash',
-        backbone: '../scripts/libs/backbone',
+        jquery: '../components/jquery/jquery',
+        lodash: '../components/lodash/dist/lodash.underscore',
+        backbone: '../components/backbone/backbone',
         handlebars: '../components/handlebars/handlebars',
+        layoutmanager: '../components/layoutmanager/backbone.layoutmanager'
+    },
+
+    map: {
+        // Ensure Lo-Dash is used instead of underscore.
+        "*": { "underscore": "lodash" }
     },
 
     shim: {
@@ -24,7 +31,7 @@ require.config({
         },
 
         // Backbone.LayoutManager depends on Backbone.
-        'plugins/backbone.layoutmanager': ['backbone'],
+        layoutmanager: ['backbone'],
 
         handlebars: {
             exports: 'Handlebars'

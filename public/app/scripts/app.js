@@ -8,7 +8,7 @@ define([
     'handlebars',
 
     // Plugins.
-    'plugins/backbone.layoutmanager'
+    'layoutmanager'
 ],
 
 function($, _, Backbone, Handlebars) {
@@ -28,14 +28,11 @@ function($, _, Backbone, Handlebars) {
     var JST = window.JST = window.JST || {};
 
     // Configure LayoutManager with Backbone Boilerplate defaults.
-    Backbone.LayoutManager.configure({
+    Backbone.Layout.configure({
         manage: true,
-        
-        paths: {
-            layout: 'templates/',
-            template: 'templates/'
-        },
 
+        prefix: 'templates/',
+        
         fetch: function(path) {
             path = path + '.html';
 
@@ -57,35 +54,33 @@ function($, _, Backbone, Handlebars) {
         },
 
         // Helper for using layouts.
-        useLayout: function(name) {
-            // If already using this Layout, then don't re-inject into the DOM.
-            if (this.layout && this.layout.options.template === name) {
-                return this.layout;
+        useLayout: function(name, options) {
+            // Enable variable arity by allowing the first argument to be the options
+            // object and omitting the name argument.
+            if (_.isObject(name)) {
+                options = name;
             }
 
-            // If a layout already exists, remove it from the DOM.
+            // Ensure options is an object.
+            options = options || {};
+
+            // If a name property was specified use that as the template.
+            if (_.isString(name)) {
+                options.template = name;
+            }
+
+            // Check if a layout already exists, if so, update the template.
             if (this.layout) {
-                this.layout.remove();
+                this.layout.template = options.template;
+            } else {
+                // Create a new Layout with options.
+                this.layout = new Backbone.Layout(_.extend({
+                    
+                }, options));
             }
 
-            // Create a new Layout.
-            var layout = new Backbone.Layout({
-                template: name,
-                className: 'layout ' + name,
-                id: 'layout'
-            });
-
-            // Insert into the DOM.
-            $('#main').empty().append(layout.el);
-
-            // Render the layout.
-            layout.render();
-
-            // Cache the refererence.
-            this.layout = layout;
-
-            // Return the reference, for chainability.
-            return layout;
+            // Cache the reference.
+            return this.layout;
         }
     }, Backbone.Events);
 
