@@ -25,7 +25,7 @@ function error_handler(err, res) {
         res.json({ user_error: err.message });
     } else {
         res.statusCode = 500;
-        console.log('INTERNAL ERROR: ', err);
+        console.log('INTERNAL ERROR: ', err.stack);
         res.json({ internal_error: 'Database error' });
     }
 }
@@ -46,6 +46,7 @@ app.post('/checkAnswer/:questionid', function (req, res) {
 
     async.parallel([
         function (cb) {
+            console.log(req.body.realAnswer);
             user_db.query(req.body.realAnswer, function (err, rows) {
                 if (err) return cb(err);
                 cb(null, rows);
@@ -80,7 +81,7 @@ app.post('/checkAnswer/:questionid', function (req, res) {
 });
 
 app.get('/modules', function (req, res) {
-    db.query('SELECT * FROM Modules', function (err, rows) {
+    db.query('SELECT * FROM problem_sets', function (err, rows) {
         if (err) return error_handler(err, res);
         res.json(rows);
     });
@@ -104,10 +105,10 @@ app.get('/module/:id', function (req, res) {
 });
 
 app.get('/modules/:id/questions', function (req, res) {
-    var sql = 'SELECT Questions.*\
-               FROM Modules JOIN Questions\
-               ON Modules.id = Questions.module_id\
-               AND Modules.id = ?';
+    var sql = 'SELECT questions.*\
+               FROM problem_sets JOIN questions\
+               ON problem_sets.id = Questions.problem_set_id\
+               AND problem_sets.id = ?';
 
     db.query(sql, [req.params.id], function (err, rows) {
         if (err) return error_handler(err, res);
