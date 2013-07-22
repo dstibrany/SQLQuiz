@@ -1,26 +1,26 @@
 define([
     'app',
     'backbone',
-    '../modules/module',
+    '../modules/problem_set',
     '../modules/question',
     '../modules/relation'
 ],
 
-function (app, Backbone, Module, Question, Relation) {
+function (app, Backbone, Problem_Set, Question, Relation) {
     'use strict';
     // Defining the application router, you can attach sub routers here.
     var Router = Backbone.Router.extend({
         initialize: function() {
-            var modules   = app.models.modules   = new Module.Collection();
-            var questions = app.models.questions = new Question.Collection();
-            var relations = app.models.relations = new Relation.Collection();
+            var problem_sets = app.models.problem_sets = new Problem_Set.Collection();
+            var questions    = app.models.questions    = new Question.Collection();
+            var relations    = app.models.relations    = new Relation.Collection();
 
             var main = app.useLayout("main-layout");
             $('#main').append(main.$el)
             
             main.setViews({
-                "#module": new Module.Views.Layout({
-                    collection: modules
+                "#problem_set": new Problem_Set.Views.Layout({
+                    collection: problem_sets
                 }),
                 "#question": new Question.Views.Layout({
                     collection: questions
@@ -30,24 +30,25 @@ function (app, Backbone, Module, Question, Relation) {
                 })
             }).render();
 
-            modules.fetch();
+            problem_sets.fetch();
         },
 
         routes: {
             '': 'index',
-            'module/:id': 'loadModule',
-            'module/:id/question/:questionNumber': 'loadQuestion'
+            'problem_set/:id': 'loadProblemSet',
+            'problem_set/:id/question/:questionNumber': 'loadQuestion'
         },
 
         index: function() {
             console.log('index route');
         },
 
-        loadModule: function(id) {
+        loadProblemSet: function(id) {
             // TODO handle bad ids
             app.state.module = id; 
             
-            $.get('/module/' + id).done(function (data) {
+            // load problem set
+            $.get(app.apiRoot + '/problem_set/' + id).done(function (data) {
                 app.models.relations.setURL(id);
                 app.models.relations.fetch({ reset: true });
             })
@@ -56,14 +57,14 @@ function (app, Backbone, Module, Question, Relation) {
             app.models.questions.fetch({ reset: true });
         },
 
-        loadQuestion: function(module_id, question_number) {
+        loadQuestion: function(problem_set_id, question_number) {
             // TODO handle bad ids
-            app.state.module = module_id;
-            app.models.questions.setURL(module_id);
+            app.state.module = problem_set_id;
+            app.models.questions.setURL(problem_set_id);
             app.models.questions.fetch({ silent: true }).done(function() {
                 app.models.questions.trigger('reset', +question_number);
             });
-            app.models.relations.setURL(module_id);
+            app.models.relations.setURL(problem_set_id);
             app.models.relations.fetch();  
         }
     });

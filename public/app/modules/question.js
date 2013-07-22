@@ -12,7 +12,7 @@ function(app, Results) {
     Question.Collection = Backbone.Collection.extend({
         model: Question.Model,
 
-        url: '/modules/1/questions', // 1 is just a placeholder and will be dynamically replaced
+        url: app.apiRoot + '/problem_set/1/questions', // 1 is just a placeholder and will be dynamically replaced
         currentQuestion: 1,
 
         initialize: function() {
@@ -37,8 +37,8 @@ function(app, Results) {
             this.trigger('change:question');
         },
 
-        setURL: function(module_id) {
-            this.url = this.url.replace(/\d+/, module_id);
+        setURL: function(problem_set_id) {
+            this.url = this.url.replace(/\d+/, problem_set_id);
         }
     });
 
@@ -78,7 +78,7 @@ function(app, Results) {
         },
 
         changeRoute: function() {
-            var route = '/module/' + app.state.module + '/question/' + this.collection.currentQuestion;
+            var route = '/problem_set/' + app.state.module + '/question/' + this.collection.currentQuestion;
             Backbone.history.navigate(route);
             this.render();
         },
@@ -127,7 +127,6 @@ function(app, Results) {
                 userAnswer: this.$('textarea').val(),
                 realAnswer: this.model.get('answer')
             })
-            
         }
     });
 

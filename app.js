@@ -39,7 +39,7 @@ function destroy_user_db(req, uuid) {
 }
 
 // Routes
-app.post('/checkAnswer/:questionid', function (req, res) {
+app.post('/api/checkAnswer/:questionid', function (req, res) {
     var uuid = req.cookies && req.cookies.uuid;
     var user_db = user_db_map[uuid];
     if (!user_db) return res.send(500);
@@ -80,7 +80,7 @@ app.post('/checkAnswer/:questionid', function (req, res) {
 });
 
 // get problem sets
-app.get('/modules', function (req, res) {
+app.get('/api/problem_set', function (req, res) {
     db.query('SELECT * FROM problem_sets', function (err, rows) {
         if (err) return error_handler(err, res);
         res.json(rows);
@@ -88,7 +88,7 @@ app.get('/modules', function (req, res) {
 });
 
 // load problem set
-app.get('/module/:id', function (req, res) {
+app.get('/api/problem_set/:id', function (req, res) {
     if (req.cookies && req.cookies.uuid) {
         destroy_user_db(req, req.cookies.uuid);
     }
@@ -106,7 +106,7 @@ app.get('/module/:id', function (req, res) {
 });
 
 // questions
-app.get('/modules/:id/questions', function (req, res) {
+app.get('/api/problem_set/:id/questions', function (req, res) {
     var sql = 'SELECT questions.*\
                FROM problem_sets JOIN questions\
                ON problem_sets.id = Questions.problem_set_id\
@@ -119,7 +119,7 @@ app.get('/modules/:id/questions', function (req, res) {
 });
 
 // relations
-app.get('/modules/:id/relations', function (req, res) {
+app.get('/api/problem_set/:id/relations', function (req, res) {
     var uuid = req.cookies && req.cookies.uuid;
     if (!uuid) res.send(500);
     
@@ -158,7 +158,6 @@ app.get('/modules/:id/relations', function (req, res) {
 
                 // add foreign key object to respective column
                 fks.forEach(function (fk) {
-                    console.log(columns_hash_table[fk.from]);
                     columns_hash_table[fk.from]['fk'] = fk; 
                 });
 

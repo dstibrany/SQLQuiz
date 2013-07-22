@@ -7,7 +7,7 @@ function(app) {
     var Results = app.module();
 
     Results.Model = Backbone.Model.extend({
-        urlRoot: '/checkAnswer'
+        urlRoot: app.apiRoot + '/checkAnswer'
     });
 
     Results.Views.Layout = Backbone.View.extend({

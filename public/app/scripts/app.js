@@ -18,6 +18,7 @@ function($, _, Backbone, Handlebars) {
     var app = window.app = {
         // The root path to run the application.
         root: '/',
+        apiRoot: '/api',
         models: {},
         state: {
             module: null
