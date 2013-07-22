@@ -11,26 +11,7 @@ function (app, Backbone, Problem_Set, Question, Relation) {
     // Defining the application router, you can attach sub routers here.
     var Router = Backbone.Router.extend({
         initialize: function() {
-            var problem_sets = app.models.problem_sets = new Problem_Set.Collection();
-            var questions    = app.models.questions    = new Question.Collection();
-            var relations    = app.models.relations    = new Relation.Collection();
 
-            var main = app.useLayout("main-layout");
-            $('#main').append(main.$el)
-            
-            main.setViews({
-                "#problem_set": new Problem_Set.Views.Layout({
-                    collection: problem_sets
-                }),
-                "#question": new Question.Views.Layout({
-                    collection: questions
-                }),
-                "#relations": new Relation.Views.List({
-                    collection: relations
-                })
-            }).render();
-
-            problem_sets.fetch();
         },
 
         routes: {
@@ -40,21 +21,46 @@ function (app, Backbone, Problem_Set, Question, Relation) {
         },
 
         index: function() {
-            console.log('index route');
+            var problem_sets = app.models.problem_sets = new Problem_Set.Collection();
+            var main = app.useLayout("main-layout");
+            $('#main').append(main.$el);
+            
+            main.setViews({
+                "#problem_sets": new Problem_Set.Views.Layout({
+                    collection: problem_sets
+                })
+            }).render();
+
+            problem_sets.fetch({ reset: true });
         },
 
         loadProblemSet: function(id) {
             // TODO handle bad ids
-            app.state.module = id; 
+            app.state.problem_set = id;
+
+            var questions = app.models.questions = new Question.Collection();
+            var relations = app.models.relations = new Relation.Collection();
+
+            var layout = app.useLayout("problemset-layout");
+            $('#main').append(layout.$el);
+            
+            layout.setViews({
+                "#question": new Question.Views.Layout({
+                    collection: questions
+                }),
+                "#relations": new Relation.Views.List({
+                    collection: relations
+                })
+            }).render();
             
             // load problem set
             $.get(app.apiRoot + '/problem_set/' + id).done(function (data) {
-                app.models.relations.setURL(id);
-                app.models.relations.fetch({ reset: true });
+                relations.setURL(id);
+                relations.fetch({ reset: true });
             })
     
-            app.models.questions.setURL(id);
-            app.models.questions.fetch({ reset: true });
+            questions.setURL(id);
+            questions.fetch({ reset: true });
         },
 
         loadQuestion: function(problem_set_id, question_number) {

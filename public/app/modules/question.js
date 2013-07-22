@@ -74,11 +74,12 @@ function(app, Results) {
                     correct: this.collection.at(i - 1).get('correct')
                 })
             }
+            if (!questions.length) questions.empty = true;
             return questions;
         },
 
         changeRoute: function() {
-            var route = '/problem_set/' + app.state.module + '/question/' + this.collection.currentQuestion;
+            var route = '/problem_set/' + app.state.problem_set + '/question/' + this.collection.currentQuestion;
             Backbone.history.navigate(route);
             this.render();
         },
