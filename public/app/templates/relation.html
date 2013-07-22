@@ -1,12 +1,22 @@
 <table class="relation table">
     <tbody>
         <tr>
-            <th colspan="2">{{name}}</th>
+            <th colspan="2">{{table_name}}</th>
         </tr>
-        {{#each relation}}
+        {{#each columns}}
         <tr>
-            <td>{{@key}}</td>
-            <td>{{key}}</td>
+            <td>{{name}}</td>
+            {{#if pk}}
+            <td>Primary Key</td>
+            {{else}}
+                {{#if fk}}
+                <td>Foreign Key {{fk.from}} refrences {{fk.table}}({{fk.to}})</td>
+                {{else}}
+                <td>&nbsp;</td>
+                {{/if}}
+            {{/if}}
+
+
         </tr>
         {{/each}}
     </tbody>

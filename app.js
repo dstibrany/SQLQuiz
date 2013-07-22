@@ -124,7 +124,7 @@ app.get('/modules/:id/relations', function (req, res) {
     if (!uuid) res.send(500);
     
     var user_db = user_db_map[uuid];
-    var out = {};
+    var out = [];
 
     var get_tables = 'SELECT name FROM sqlite_master WHERE type="table" ORDER BY name';
     user_db.query(get_tables, function (err, tables) {
@@ -135,20 +135,39 @@ app.get('/modules/:id/relations', function (req, res) {
                 function (inner_cb) {
                     user_db.query('PRAGMA foreign_key_list(' + table.name + ')', function (err, fk_rows) {
                         if (err) return inner_cb(err);
-                        out[table.name]['fk_list'] = fk_rows;
-                        inner_cb(null);
+                        inner_cb(null, fk_rows);
                     });
                 },
                 function (inner_cb) {
                     user_db.query('PRAGMA table_info(' + table.name + ')', function (err, table_columns) {
                         if (err) return inner_cb(err);
-                        out[table.name]['columns'] = table_columns;
-                        inner_cb(null);
+                        inner_cb(null, table_columns);
                     });
                 },
             ], 
-            function (err) {
-                return outer_cb(err || null);
+            function (err, results) {
+                if (err) return outer_cb(err);
+                var fks     = results[0];
+                var columns = results[1];
+
+                // use a hash to speed things up
+                var columns_hash_table = {};
+                columns.forEach(function (column) {
+                    columns_hash_table[column.name] = column;
+                });
+
+                // add foreign key object to respective column
+                fks.forEach(function (fk) {
+                    console.log(columns_hash_table[fk.from]);
+                    columns_hash_table[fk.from]['fk'] = fk; 
+                });
+
+                out.push({
+                    table_name:   table.name,
+                    columns:      columns
+                });
+
+                outer_cb(null);
             });
         
         }, function (err) {

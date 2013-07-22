@@ -48,13 +48,12 @@ function (app, Backbone, Module, Question, Relation) {
             app.state.module = id; 
             
             $.get('/module/' + id).done(function (data) {
-                console.log(data);
+                app.models.relations.setURL(id);
+                app.models.relations.fetch({ reset: true });
             })
     
             app.models.questions.setURL(id);
             app.models.questions.fetch({ reset: true });
-            // app.models.relations.setURL(id);
-            // app.models.relations.fetch();
         },
 
         loadQuestion: function(module_id, question_number) {

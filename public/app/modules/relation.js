@@ -2,7 +2,7 @@ define([
   "app"
 ],
 
-function(app) {
+function (app) {
 
     var Relation = app.module();
 
@@ -21,7 +21,7 @@ function(app) {
         template: 'relations',
 
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.listenTo(this.collection, 'reset', this.render);
         },
 
         beforeRender: function() {
@@ -37,12 +37,7 @@ function(app) {
         template: 'relation',
 
         serialize: function() {
-            var out = {};
-            var data = this.model.toJSON();
-            out.relation = _.clone(data);
-            out.name = data.__name__;
-            delete out.relation.__name__;
-            return out;
+            return this.model.toJSON();
         }
     })
 
