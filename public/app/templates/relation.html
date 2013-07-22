@@ -1,4 +1,4 @@
-<table class="relation table">
+<table class="relation table table-condensed table-bordered">
     <tbody>
         <tr>
             <th colspan="2">{{table_name}}</th>
@@ -7,16 +7,14 @@
         <tr>
             <td>{{name}}</td>
             {{#if pk}}
-            <td>Primary Key</td>
+            <td>PK</td>
             {{else}}
                 {{#if fk}}
-                <td>Foreign Key {{fk.from}} refrences {{fk.table}}({{fk.to}})</td>
+                <td>FK refrences {{fk.table}}({{fk.to}})</td>
                 {{else}}
                 <td>&nbsp;</td>
                 {{/if}}
             {{/if}}
-
-
         </tr>
         {{/each}}
     </tbody>
