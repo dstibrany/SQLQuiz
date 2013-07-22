@@ -46,7 +46,6 @@ app.post('/checkAnswer/:questionid', function (req, res) {
 
     async.parallel([
         function (cb) {
-            console.log(req.body.realAnswer);
             user_db.query(req.body.realAnswer, function (err, rows) {
                 if (err) return cb(err);
                 cb(null, rows);
@@ -80,6 +79,7 @@ app.post('/checkAnswer/:questionid', function (req, res) {
     });
 });
 
+// get problem sets
 app.get('/modules', function (req, res) {
     db.query('SELECT * FROM problem_sets', function (err, rows) {
         if (err) return error_handler(err, res);
@@ -87,12 +87,13 @@ app.get('/modules', function (req, res) {
     });
 });
 
+// load problem set
 app.get('/module/:id', function (req, res) {
     if (req.cookies && req.cookies.uuid) {
         destroy_user_db(req, req.cookies.uuid);
     }
 
-    var uuid = utils.uuid();
+    var uuid    = utils.uuid();
     var user_db = new User_DB(req.params.id);
     
     user_db_map[uuid] = user_db;
@@ -104,6 +105,7 @@ app.get('/module/:id', function (req, res) {
     });
 });
 
+// questions
 app.get('/modules/:id/questions', function (req, res) {
     var sql = 'SELECT questions.*\
                FROM problem_sets JOIN questions\
@@ -116,32 +118,43 @@ app.get('/modules/:id/questions', function (req, res) {
     });
 });
 
+// relations
 app.get('/modules/:id/relations', function (req, res) {
-    var out = [];
-    var sql = 'SELECT relations.name\
-               FROM relationmodulemap JOIN relations\
-               ON relationmodulemap.relation_id = relations.id\
-               WHERE relationmodulemap.module_id = ?';
+    var uuid = req.cookies && req.cookies.uuid;
+    if (!uuid) res.send(500);
+    
+    var user_db = user_db_map[uuid];
+    var out = {};
 
-    db.query(sql, [req.params.id], function (err, rows) {
+    var get_tables = 'SELECT name FROM sqlite_master WHERE type="table" ORDER BY name';
+    user_db.query(get_tables, function (err, tables) {
         if (err) return error_handler(err, res);
-        async.forEach(rows, function (row, cb) {
-            db.query('describe ' + row.name, function (err, inner_rows) {
-                if (err) return cb(err);
-                var relation = {};
-                inner_rows.forEach(function (inner_row) {
-                    relation[inner_row.Field] = {
-                        key: inner_row.Key === 'MUL' ? 'FK' : inner_row.Key
-                    };
-                });
-                relation['__name__'] = row.name;
-                out.push(relation)
-                cb(null);
-            });        
+        async.each(tables, function (table, outer_cb) {
+            out[table.name] = {};
+            async.parallel([
+                function (inner_cb) {
+                    user_db.query('PRAGMA foreign_key_list(' + table.name + ')', function (err, fk_rows) {
+                        if (err) return inner_cb(err);
+                        out[table.name]['fk_list'] = fk_rows;
+                        inner_cb(null);
+                    });
+                },
+                function (inner_cb) {
+                    user_db.query('PRAGMA table_info(' + table.name + ')', function (err, table_columns) {
+                        if (err) return inner_cb(err);
+                        out[table.name]['columns'] = table_columns;
+                        inner_cb(null);
+                    });
+                },
+            ], 
+            function (err) {
+                return outer_cb(err || null);
+            });
+        
         }, function (err) {
             if (err) return error_handler(err, res);
             res.json(out);
-        })
+        });
     });
 });
 
