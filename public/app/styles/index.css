@@ -11,8 +11,20 @@ body {
     background: #ECF0F1;
 }
 
+#main {
+    position: relative;
+}
+
+.pagination-container {
+    position: absolute;
+    top: 5px;
+    right: 0;
+}
+.pagination {
+    margin: 0;
+}
 .pagination ul {
-    background: #1ABC9C;
+    background: transparent;
 }
 .pagination ul li > a {
     background: #1ABC9C;
@@ -38,18 +50,30 @@ body {
 }
 
 .question-item textarea {
-    width: 100%;
+    width: 50%;
     height: 150px;
     padding: 10px;
 }
 .question-item button {
-    width: 100px;
+    width: 130px;
 }
 
+#relations h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
 .relation {
-    width: 400px;
-    background: #34495E;
+    width: 430px;
+}
+.relation-table {
+    background: #ECF0F1;
     color: #fff;
+}
+.relation:nth-child(odd) {
+    float: left;
+}
+.relation:nth-child(even) {
+    float: right;
 }
 .relation th {
     text-align: center;

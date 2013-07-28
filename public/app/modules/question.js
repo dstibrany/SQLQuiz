@@ -58,6 +58,9 @@ function(app, Results) {
         beforeRender: function() {
             if (this.collection.length) {
                 this.insertView(new Question.Views.Item({
+                    insert: function(root, child) {
+                        $(root).prepend(child);
+                    },
                     model: this.collection.at(this.collection.getCurrentQuestion() - 1)
                 }));
             }

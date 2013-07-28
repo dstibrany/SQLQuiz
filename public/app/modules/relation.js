@@ -35,6 +35,7 @@ function (app) {
 
     Relation.Views.Item = Backbone.View.extend({
         template: 'relation',
+        className: 'relation',
 
         serialize: function() {
             return this.model.toJSON();
