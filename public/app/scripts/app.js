@@ -21,7 +21,7 @@ function($, _, Backbone, Handlebars) {
         apiRoot: '/api',
         models: {},
         state: {
-            module: null
+            problem_set: null
         }
     };
 
@@ -79,6 +79,8 @@ function($, _, Backbone, Handlebars) {
                     
                 }, options));
             }
+
+            $('#main').append(this.layout.$el);
 
             // Cache the reference.
             return this.layout;

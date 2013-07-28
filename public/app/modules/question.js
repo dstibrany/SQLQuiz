@@ -13,13 +13,11 @@ function(app, Results) {
         model: Question.Model,
 
         url: app.apiRoot + '/problem_set/1/questions', // 1 is just a placeholder and will be dynamically replaced
+        
         currentQuestion: 1,
 
-        initialize: function() {
-            this.on('reset', function (question_number) {
-                question_number = typeof question_number === 'number' ? question_number : 1;
-                this.currentQuestion = question_number;
-            }, this);
+        getCurrentQuestion: function() {
+            return +this.currentQuestion;
         },
 
         selectQuestion: function(questionNum) {
@@ -28,12 +26,12 @@ function(app, Results) {
         },
 
         nextQuestion: function() {
-            this.currentQuestion = ++this.currentQuestion % (this.length + 1) || 1;
+            this.currentQuestion = (this.getCurrentQuestion() + 1) % (this.length + 1) || 1;
             this.trigger('change:question');
         },
 
         prevQuestion: function() {
-            this.currentQuestion = --this.currentQuestion % (this.length + 1) || this.length;
+            this.currentQuestion = (this.getCurrentQuestion() - 1) % (this.length + 1) || this.length;
             this.trigger('change:question');
         },
 
@@ -60,7 +58,7 @@ function(app, Results) {
         beforeRender: function() {
             if (this.collection.length) {
                 this.insertView(new Question.Views.Item({
-                    model: this.collection.at(this.collection.currentQuestion - 1)
+                    model: this.collection.at(this.collection.getCurrentQuestion() - 1)
                 }));
             }
         },
@@ -70,7 +68,7 @@ function(app, Results) {
             for (var i = 1, len = this.collection.length; i <= len; i++ ) {
                 questions.push({
                     questionNumber: i,
-                    isActive: i === this.collection.currentQuestion ? true : false,
+                    isActive: i === this.collection.getCurrentQuestion() ? true : false,
                     correct: this.collection.at(i - 1).get('correct')
                 })
             }
@@ -79,7 +77,10 @@ function(app, Results) {
         },
 
         changeRoute: function() {
-            var route = '/problem_set/' + app.state.problem_set + '/question/' + this.collection.currentQuestion;
+            var route = '/problem_set/' 
+                        + app.state.problem_set 
+                        + '/question/' 
+                        + this.collection.getCurrentQuestion();
             Backbone.history.navigate(route);
             this.render();
         },
@@ -130,7 +131,6 @@ function(app, Results) {
             })
         }
     });
-
 
     return Question;
 });
