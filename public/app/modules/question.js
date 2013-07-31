@@ -1,9 +1,10 @@
 define([
   "app",
+  "ace",
   "../modules/results"
 ],
 
-function(app, Results) {
+function(app, ace, Results) {
 
     var Question = app.module();
 
@@ -123,13 +124,20 @@ function(app, Results) {
             }));
         },
 
+        afterRender: function() {
+            var editor = this.editor = ace.edit('editor');
+            editor.setTheme("ace/theme/tomorrow");
+            editor.getSession().setMode("ace/mode/sql");
+            editor.setShowPrintMargin(false);
+        },
+
         serialize: function() {
             return this.model.toJSON();
         },
         
         submitAnswer: function() {
             app.trigger('submit:answer', {
-                userAnswer: this.$('textarea').val(),
+                userAnswer: this.editor.getValue(),
                 realAnswer: this.model.get('answer')
             })
         }

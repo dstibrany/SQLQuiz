@@ -6,12 +6,13 @@ define([
     'lodash',
     'backbone',
     'handlebars',
+    'ace',
 
     // Plugins.
     'layoutmanager'
 ],
 
-function($, _, Backbone, Handlebars) {
+function($, _, Backbone, Handlebars, ace) {
     'use strict';
     // Provide a global location to place configuration settings and module
     // creation.

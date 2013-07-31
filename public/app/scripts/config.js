@@ -4,6 +4,14 @@ require.config({
     // Initialize the application with the main application file.
     deps: ['main'],
 
+    packages: [
+        {
+            "name": "ace",
+            "location": "../components/ace/lib/ace",
+            "main": "ace.js"
+        }
+    ],
+
     paths: {
         // JavaScript folders.
         libs: '../scripts/libs',
