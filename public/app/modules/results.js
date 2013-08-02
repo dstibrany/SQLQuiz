@@ -12,6 +12,7 @@ function(app) {
 
     Results.Views.Layout = Backbone.View.extend({
         template: 'results',
+        id: 'results',
 
         initialize: function() {
             var self = this;
@@ -29,6 +30,10 @@ function(app) {
                     $('.pagination .active a').addClass('correct');
                 });
             }, this);
+
+            this.on("afterRender", function(view) {
+                view.$el.hide().slideDown();
+            });
         },
 
         serialize: function() {
@@ -51,6 +56,14 @@ function(app) {
             }
             return data;
         },
+
+        // afterRender: function() {
+        //     var self = this;
+        //     // self.$el.fadeIn();
+        //     // setTimeout(function() {
+        //     //     console.log('ok');
+        //     // }, 2500)
+        // },
 
         cleanup: function() {
             app.off('submit:answer');

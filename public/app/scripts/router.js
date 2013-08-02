@@ -12,7 +12,8 @@ function (app, Backbone, Problem_Set, Question, Relation, Header) {
     // Defining the application router, you can attach sub routers here.
     var Router = Backbone.Router.extend({
         initialize: function() {
-
+            app.models.problem_sets = new Problem_Set.Collection();
+            app.models.problem_sets.fetch({ reset: true });
         },
 
         routes: {
@@ -23,18 +24,16 @@ function (app, Backbone, Problem_Set, Question, Relation, Header) {
         },
 
         index: function() {
-            var problem_sets = app.models.problem_sets = new Problem_Set.Collection();
+            app.state.problem_set = null;
             
             app.useLayout("main-layout")
             .setViews({
                 '#header': new Header.Views.Layout(),
                 "#problem_sets": new Problem_Set.Views.Layout({
-                    collection: problem_sets
+                    collection: app.models.problem_sets
                 })
             })
             .render();
-
-            problem_sets.fetch({ reset: true });
         },
 
         loadProblemSet: function(id) {

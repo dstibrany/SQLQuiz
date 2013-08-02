@@ -5,11 +5,13 @@
             <div class="nav-collapse collapse" id="nav-collapse-01">
                 <ul class="nav">
                     <li>
-                        <a style="font-size: 23px;" href="/">SQLQuiz</a>
+                        <a id="navtitle" style="font-size: 23px;" href="/">SQLQuiz</a>
                     </li>
+                    {{#if ps_name}}
                     <li>
-                        <a href="#problem_sets">Problem Sets</a>
+                        <a href="#"><span class="ps-name">{{ps_name}}</span></a>
                     </li>
+                    {{/if}}
                 </ul>
             </div><!--/.nav -->
         </div>

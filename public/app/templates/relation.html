@@ -10,7 +10,7 @@
             <td>Primary key</td>
             {{else}}
                 {{#if fk}}
-                <td>Foreign key to {{fk.table}}({{fk.to}})</td>
+                <td>Foreign key references {{fk.table}} ({{fk.to}})</td>
                 {{else}}
                 <td>&nbsp;</td>
                 {{/if}}
