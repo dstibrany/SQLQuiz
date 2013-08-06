@@ -1,12 +1,12 @@
 {{#unless empty}}
     {{#if user_error}}
         <div id="user-error">
-            <h4>{{user_error}}</h4>
+            <p>{{user_error}}</p>
         </div>
     {{else}}
         <div id="answer-status">
         {{#if correct}}
-            <h4>Correct Query</h4>
+            <h4 style="color: #1ABC9C;">Correct Query</h4>
         {{else}}
             <h4 style="color: #E74C3C;">Incorrect Query</h4>
         {{/if}}

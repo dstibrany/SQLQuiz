@@ -177,6 +177,6 @@ app.get('/api/problem_set/:id/relations', function (req, res) {
 });
 
 app.listen(8999, function() {
-    console.log('Listening on port 8999');
+    console.log('Listening on http://localhost:8999');
 });
 

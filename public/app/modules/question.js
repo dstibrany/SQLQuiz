@@ -129,6 +129,7 @@ function(app, ace, Results) {
             editor.setTheme("ace/theme/tomorrow");
             editor.getSession().setMode("ace/mode/sql");
             editor.setShowPrintMargin(false);
+            editor.focus();
         },
 
         serialize: function() {
@@ -140,6 +141,7 @@ function(app, ace, Results) {
                 userAnswer: this.editor.getValue(),
                 realAnswer: this.model.get('answer')
             })
+            this.editor.focus();
         }
     });
 

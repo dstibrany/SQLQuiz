@@ -12,7 +12,7 @@ function(app) {
 
     Results.Views.Layout = Backbone.View.extend({
         template: 'results',
-        id: 'results',
+        id:       'results',
 
         initialize: function() {
             var self = this;
@@ -20,6 +20,7 @@ function(app) {
                 data.id = this.model.get('id');
                 this.model.clear();
                 this.model.set(data);
+                
                 // POST data to check results;
                 Backbone.sync('create', this.model).done(function (res) {
                     self.model.set(res);
@@ -30,14 +31,11 @@ function(app) {
                     $('.pagination .active a').addClass('correct');
                 });
             }, this);
-
-            this.on("afterRender", function(view) {
-                view.$el.hide().slideDown();
-            });
         },
 
         serialize: function() {
             var data = this.model.toJSON();
+            
             if (!data.userAnswer) {
                 data.empty = true;
                 return data;
@@ -54,22 +52,19 @@ function(app) {
             } else if (data.userResults) {
                 data.userResults.push({empty: 'No results found.'})
             }
+
+            if (data.user_error) {
+                data.user_error = data.user_error.replace(/SQLITE_ERROR/, "DB_ERROR");
+            }
+
             return data;
         },
-
-        // afterRender: function() {
-        //     var self = this;
-        //     // self.$el.fadeIn();
-        //     // setTimeout(function() {
-        //     //     console.log('ok');
-        //     // }, 2500)
-        // },
 
         cleanup: function() {
             app.off('submit:answer');
         }
 
-    })
+    });
 
     return Results;
 });

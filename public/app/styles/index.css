@@ -16,6 +16,11 @@ h2 {
     margin: 20px 0;
 }
 
+h4 {
+    text-align: center;
+    font-size: 24px;
+}
+
 .navbar {
     margin: 0;
 }
@@ -36,7 +41,7 @@ h2 {
 .pagination-container {
     position: absolute;
     top: 5px;
-    right: 0;
+    right: 230px;
 }
 .pagination {
     margin: 0;
@@ -81,15 +86,14 @@ h2 {
     width: 130px;
 }
 
-#relations h3 {
-    text-align: center;
+#relations h4 {
     margin: 20px 0;
 }
 .relation {
     width: 430px;
 }
 .relation-table {
-    background: #F6F6F6;
+    background: transparent;
     color: #34495E;
 }
 .relation:nth-child(odd) {
@@ -105,6 +109,11 @@ h2 {
     width: 50%;
 }
 
+caption {
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
 #user-results {
     float: left;
     width: 48%;
@@ -116,6 +125,8 @@ h2 {
 
 #user-error {
     color: #E74C3C;
+    margin-bottom: 20px;
+    font-size: 18px;
 }
 
 .ps-name {
