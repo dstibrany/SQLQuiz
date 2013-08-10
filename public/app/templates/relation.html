@@ -7,10 +7,10 @@
         <tr>
             <td>{{name}}</td>
             {{#if pk}}
-            <td>Primary key</td>
+            <td class="pk">Primary key</td>
             {{else}}
                 {{#if fk}}
-                <td>Foreign key references {{fk.table}} ({{fk.to}})</td>
+                <td><span class="fk">Foreign key</span> references <span class="fk-table">{{fk.table}}</span> ({{fk.to}})</td>
                 {{else}}
                 <td>&nbsp;</td>
                 {{/if}}
