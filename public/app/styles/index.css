@@ -75,13 +75,13 @@ h4 {
     background: transparent !important;
 }
 .pagination ul li.previous > a, .pagination ul li.next > a {
-    border-color : #2c3e50 !important;
+    /*border-color : #2c3e50 !important;*/
 }
 .fui-arrow-right {
-    border-left: 2px solid #2c3e50 !important;
+    border-left: 1px solid #2c3e50 !important;
 }
 .fui-arrow-left {
-    border-right: 2px solid #2c3e50 !important;
+    border-right: 1px solid #2c3e50 !important;
 }
 
 .question-item textarea {
@@ -106,7 +106,7 @@ h4 {
     margin: 20px 0;
 }
 .relation {
-    width: 430px;
+    width: 438px;
 }
 .relation-table {
     background: #f5f5f5;
@@ -134,9 +134,11 @@ h4 {
 .relation .fk {
     color: #C800A4;
 }
-
 .relation .fk-table {
     color: #1ABC9C;
+}
+.table-condensed th, .table-condensed td {
+    padding: 4px 10px;
 }
 
 caption {
