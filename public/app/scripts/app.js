@@ -80,6 +80,8 @@ function($, _, Backbone, Handlebars, ace) {
                     
                 }, options));
             }
+            
+            this.layout.remove();
 
             $('#main').append(this.layout.$el);
 
