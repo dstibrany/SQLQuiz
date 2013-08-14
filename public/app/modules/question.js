@@ -17,6 +17,8 @@ function(app, ace, Results) {
         
         currentQuestion: 1,
 
+        hover: false,
+
         getCurrentQuestion: function() {
             return +this.currentQuestion;
         },
@@ -48,7 +50,13 @@ function(app, ace, Results) {
         events: {
             'click .next': 'nextQuestion',
             'click .previous': 'prevQuestion',
-            'click .pagination a': 'selectQuestion'
+            'click .pagination a': 'selectQuestion',
+            'mouseover .fui-arrow-left': function(e) {
+                $(e.target).removeClass('hover-prev');
+            },
+            'mouseover .fui-arrow-right': function(e) {
+                $(e.target).removeClass('hover-next');
+            }
         },
 
         initialize: function() {
@@ -67,8 +75,15 @@ function(app, ace, Results) {
             }
         },
 
+        afterRender: function() {
+            this.collection.hover = false;
+        },
+
         serialize: function() {
             var questions = [];
+
+            if (!this.collection.length) questions.empty = true;
+
             for (var i = 1, len = this.collection.length; i <= len; i++ ) {
                 questions.push({
                     questionNumber: i,
@@ -76,7 +91,13 @@ function(app, ace, Results) {
                     correct: this.collection.at(i - 1).get('correct')
                 })
             }
-            if (!questions.length) questions.empty = true;
+
+            if (this.collection.hover === 'prev') {
+                questions.hoverPrev = true;
+            } else if (this.collection.hover === 'next') {
+                questions.hoverNext = true;
+            }
+
             return questions;
         },
 
@@ -91,11 +112,13 @@ function(app, ace, Results) {
 
         nextQuestion: function(e) {
             e.preventDefault();
+            this.collection.hover = 'next';
             this.collection.nextQuestion();
         },
 
         prevQuestion: function(e) {
             e.preventDefault();
+            this.collection.hover = 'prev';
             this.collection.prevQuestion();
         },
 
@@ -126,7 +149,7 @@ function(app, ace, Results) {
 
         afterRender: function() {
             var editor = this.editor = ace.edit('editor');
-            editor.setTheme("ace/theme/tomorrow");
+            editor.setTheme("ace/theme/xcode");
             editor.getSession().setMode("ace/mode/sql");
             editor.setShowPrintMargin(false);
             editor.focus();

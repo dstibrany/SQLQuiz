@@ -49,39 +49,63 @@ h4 {
 .pagination ul {
     background: transparent;
 }
+
 .pagination ul li > a {
-    background: #34495e;
-    border: 5px solid #34495e;
+    background: #fff;
+    margin: 11px 5px 6px;
+    color: transparent;
+    border: 1px solid #FFF;
 }
 .pagination ul li > a:hover {
-    background: #BDC3C7;
-    border-color: #BDC3C7;
+    background-color: #fff;
+    color: #1ABC9C;
+    border-color: #fff;
 }
 .pagination ul li.active > a {
-    background-color: #1ABC9C;
-    border-color: #1ABC9C;
-    color: #fff;
+    color: #1ABC9C;
+    border: 1px solid #fff;
 }
 .pagination ul li.active > a:hover {
-    background-color: #BDC3C7;
-    border-color: #BDC3C7;
-    color: #fff;
+    background-color: #fff;
+    border-color: #fff;
+    color: #1ABC9C;
 }
 .pagination ul li > a.correct {
-    background: #34495E;
-    border: 5px solid #34495E;
+    background: #1ABC9C;
+    color: #1ABC9C;
+    border-color: #1abc9c;
+}
+.pagination ul li > a.correct:hover {
+    color: #fff;
+    background: #1ABC9C;
+}
+.pagination ul li.active > a.correct {
+    border-color: #1ABC9C;
+    color: #fff;
 }
 .fui-arrow-right, .fui-arrow-left {
     background: transparent !important;
 }
+.fui-arrow-right:hover, .fui-arrow-left:hover {
+    color: #1ABC9C !important;
+}
+.fui-arrow-right.hover-next {
+    color: #1ABC9C !important;
+}
+.fui-arrow-left.hover-prev {
+    color: #1ABC9C !important;
+}
 .pagination ul li.previous > a, .pagination ul li.next > a {
-    /*border-color : #2c3e50 !important;*/
+    color : #fff;
 }
 .fui-arrow-right {
     border-left: 1px solid #2c3e50 !important;
 }
 .fui-arrow-left {
     border-right: 1px solid #2c3e50 !important;
+}
+.pagination ul li:first-child.previous + li > a {
+    border-left-width: 1px;
 }
 
 .question-item textarea {
@@ -173,7 +197,6 @@ caption {
     border: 1px solid #DDD;
 }
 
-#footer {
-    height: 50px;
-    background: 
+.ace-xcode .ace_gutter {
+    background: #f6f6f6 !important;
 }

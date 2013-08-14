@@ -28,7 +28,9 @@ function(app) {
                     app.models.questions.get(data.id).set({
                         correct: res.correct
                     });
-                    $('.pagination .active a').addClass('correct');
+                    if (res.correct) {
+                        $('.pagination .active a').addClass('correct');
+                    }
                 });
             }, this);
         },
@@ -44,13 +46,13 @@ function(app) {
             if (data.correctResults && data.correctResults.length > 0) {
                 data.correctColumns = Object.keys(data.correctResults[0]);
             } else if (data.correctResults) {
-                data.correctResults.push({empty: 'No results found.'})
+                data.correctResults.push({ empty: 'No results found.' })
             }
 
             if (data.userResults && data.userResults.length > 0) {
                 data.userColumns = Object.keys(data.userResults[0]);
             } else if (data.userResults) {
-                data.userResults.push({empty: 'No results found.'})
+                data.userResults.push({ empty: 'No results found.' })
             }
 
             if (data.user_error) {

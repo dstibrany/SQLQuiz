@@ -3,7 +3,7 @@
     <div class="pagination">
         <ul>
             <li class="previous">
-                <a href="#prev" class="fui-arrow-left" data-bypass></a>
+                <a href="#prev" class="fui-arrow-left {{#if hoverPrev}}hover-prev{{/if}}" data-bypass></a>
             </li>
             {{#each this}}
             <li {{#if isActive}}class="active"{{/if}}>
@@ -11,7 +11,7 @@
             </li>
             {{/each}}
             <li class="next">
-                <a href="#next" class="fui-arrow-right" data-bypass></a>
+                <a href="#next" class="fui-arrow-right {{#if hoverNext}}hover-next{{/if}}" data-bypass></a>
             </li>
         </ul>
     </div>
