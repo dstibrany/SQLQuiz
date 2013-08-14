@@ -38,6 +38,11 @@ function(app) {
         serialize: function() {
             var data = this.model.toJSON();
             
+            if (data.user_error) {
+                data.user_error = data.user_error.replace(/SQLITE_ERROR/, "DB_ERROR");
+                return data;
+            }
+
             if (!data.userAnswer) {
                 data.empty = true;
                 return data;
@@ -53,10 +58,6 @@ function(app) {
                 data.userColumns = Object.keys(data.userResults[0]);
             } else if (data.userResults) {
                 data.userResults.push({ empty: 'No results found.' })
-            }
-
-            if (data.user_error) {
-                data.user_error = data.user_error.replace(/SQLITE_ERROR/, "DB_ERROR");
             }
 
             return data;

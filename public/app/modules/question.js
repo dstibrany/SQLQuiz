@@ -160,10 +160,13 @@ function(app, ace, Results) {
         },
         
         submitAnswer: function() {
-            app.trigger('submit:answer', {
-                userAnswer: this.editor.getValue(),
-                realAnswer: this.model.get('answer')
-            })
+            var userAnswer = this.editor.getValue();
+            if (userAnswer.trim()) {
+                app.trigger('submit:answer', {
+                    userAnswer: this.editor.getValue(),
+                    realAnswer: this.model.get('answer')
+                });
+            }
             this.editor.focus();
         }
     });
