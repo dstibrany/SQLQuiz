@@ -143,7 +143,8 @@ function(app, ace, Results) {
             this.setView('#results-hook', new Results.Views.Layout({
                 model: new Results.Model({
                     id: this.model.get('id')
-                })
+                }),
+                ace: ace
             }));
         },
 

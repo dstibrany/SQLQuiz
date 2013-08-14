@@ -11,8 +11,12 @@ function(app) {
     });
 
     Results.Views.Layout = Backbone.View.extend({
-        template: 'results',
-        id:       'results',
+        template:  'results',
+        id:        'results',
+
+        events: {
+            'click .close': 'close'
+        },
 
         initialize: function() {
             var self = this;
@@ -61,6 +65,11 @@ function(app) {
             }
 
             return data;
+        },
+
+        close: function() {
+            this.$el.find('.results-wrapper').hide();
+            this.options.ace.edit('editor').focus();
         },
 
         cleanup: function() {
