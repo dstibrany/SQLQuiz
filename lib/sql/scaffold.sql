@@ -1,7 +1,10 @@
+DROP TABLE questions;
+DROP TABLE problem_sets;
+
 CREATE TABLE IF NOT EXISTS problem_sets (
     id mediumint NOT NULL AUTO_INCREMENT,
     name varchar(255) NOT NULL,
-    rating ENUM('easy', 'medium', 'hard'),
+    rating DEC(2, 1) UNSIGNED,
 
     PRIMARY KEY (id)
 );

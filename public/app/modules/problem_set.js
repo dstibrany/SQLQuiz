@@ -16,6 +16,14 @@ function (app) {
     Problem_Set.Views.Layout = Backbone.Layout.extend({
         template: "problem_set",
 
+        events: {
+            "click .problem_set": function(e) {
+                var $target = $(e.target).closest('li');
+                var id = $target.data('id');
+                Backbone.history.navigate('problem_set/' + id, true);
+            }
+        },
+
         initialize: function() {
             this.listenTo(this.collection, 'reset', this.render);
         },

@@ -19,6 +19,16 @@ h2 {
 h4 {
     text-align: center;
     font-size: 24px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+ul {
+    margin: 0;
+}
+
+.main-layout h3 {
+    text-align: center;
 }
 
 .navbar {
@@ -32,16 +42,17 @@ h4 {
 }
 #navtitle {
     padding-left: 0;
+    font-size: 25px;
 }
 
-#main {
+.container {
     position: relative;
 }
 
 .pagination-container {
     position: absolute;
-    top: 5px;
-    right: 230px;
+    top: -48px;
+    right: -15px;
 }
 .pagination {
     margin: 0;
@@ -186,12 +197,10 @@ caption {
     float: right;
     width: 438px;
 }
-
 #user-error {
     color: #E74C3C;
     font-size: 18px;
 }
-
 .ps-name {
     color: #1ABC9C;
 }
@@ -203,7 +212,122 @@ caption {
     font-size: 16px;
     border: 1px solid #DDD;
 }
-
 .ace-xcode .ace_gutter {
     background: #f6f6f6 !important;
+}
+
+#problem_sets {
+    margin-top: 40px;
+}
+.problem_set {
+    list-style: none;
+    padding: 0;
+    height: 70px;
+    line-height: 70px;
+    cursor: pointer;
+}
+.problem_set:hover {
+    background-color: #E6E6E6;
+}
+.problem_set .ps-name {
+    font-size: 19px;
+    float: left;
+    margin-left: 20px;
+    color: #34495E;
+}
+.problem_set .ps-num {
+    font-size: 22px;
+    float: left;
+    display: block;
+    height: 100%;
+    background: #1ABC9C;
+    color: #FFF;
+    width: 50px;
+    text-align: center;
+}
+.problem_set .rating {
+    float: right;
+    position: relative;
+    top: 17px;
+    margin-right: 0px;
+}
+.problem_set .ps-rating-num {
+    font-size: 19px;
+    float: right;
+    display: block;
+    height: 100%;
+    background: transparent;
+    color: #34495E;
+    width: 50px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+/*.problem_set.odd .ps-num {
+    background: #34495E;
+}
+.problem_set.odd .ps-name {
+    color: #1ABC9C;
+}*/
+
+
+/*** rating plugin ***/
+/* Credit: http://lea.verou.me/2011/08/accessible-star-rating-widget-with-pure-css/ */
+.rating {
+    float:left;
+}
+
+/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+.rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    clip:rect(0,0,0,0);
+}
+
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    padding:0 .1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:200%;
+    line-height:1.2;
+    color:#ddd;
+    text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating:not(:checked) > label:before {
+    content: '★ ';
+}
+
+.rating > input:checked ~ label {
+    /*color: #f70;*/
+    color: gold;
+    /*text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);*/
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    color: gold;
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+    /*color: #ea0;*/
+    color: gold;
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > label:active {
+    position:relative;
+    top:2px;
+    left:2px;
 }

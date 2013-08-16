@@ -9,7 +9,8 @@ define([
     'ace',
 
     // Plugins.
-    'layoutmanager'
+    'layoutmanager',
+    '../scripts/extensions/handlebars-ext'
 ],
 
 function($, _, Backbone, Handlebars, ace) {
