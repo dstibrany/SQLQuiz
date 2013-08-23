@@ -34,13 +34,13 @@ function destroy_user_db(req, uuid) {
     var old_db = user_db_map[uuid];
     if (old_db) {
         old_db.close();
-        delete user_db_map[req.cookies.uuid];
+        delete user_db_map[req.cookies.SQLQUIZ_UUID];
     }
 }
 
 // Routes
 app.post('/api/checkAnswer/:questionid', function (req, res) {
-    var uuid = req.cookies && req.cookies.uuid;
+    var uuid = req.cookies && req.cookies.SQLQUIZ_UUID;
     var user_db = user_db_map[uuid];
     if (!user_db) return res.send(500);
 
@@ -89,8 +89,8 @@ app.get('/api/problem_set', function (req, res) {
 
 // load problem set
 app.get('/api/problem_set/:id', function (req, res) {
-    if (req.cookies && req.cookies.uuid) {
-        destroy_user_db(req, req.cookies.uuid);
+    if (req.cookies && req.cookies.SQLQUIZ_UUID) {
+        destroy_user_db(req, req.cookies.SQLQUIZ_UUID);
     }
 
     var uuid    = utils.uuid();
@@ -100,7 +100,7 @@ app.get('/api/problem_set/:id', function (req, res) {
 
     user_db.load(function (err) {
         if (err) return error_handler(err, res);
-        res.cookie('uuid', uuid);
+        res.cookie('SQLQUIZ_UUID', uuid);
         res.send(200);
     });
 });
@@ -120,7 +120,7 @@ app.get('/api/problem_set/:id/questions', function (req, res) {
 
 // relations
 app.get('/api/problem_set/:id/relations', function (req, res) {
-    var uuid = req.cookies && req.cookies.uuid;
+    var uuid = req.cookies && req.cookies.SQLQUIZ_UUID;
     if (!uuid) res.send(500);
     
     var user_db = user_db_map[uuid];
