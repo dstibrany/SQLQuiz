@@ -13,6 +13,7 @@ body {
 }
 
 h2 {
+    position: relative;
     margin: 20px 0;
 }
 
@@ -119,9 +120,14 @@ ul {
     border-left-width: 1px;
 }
 
-.question-item button {
+.question-item .btn-answer {
     margin: 20px 0;
     width: 100px;
+}
+.question-item .btn-next {
+    display: none;
+    margin: 0 auto 20px;
+    width: 130px;
 }
 
 .table {
@@ -173,21 +179,27 @@ ul {
 
 caption {
     font-size: 16px;
-    margin-bottom: 8px;
-    text-decoration: underline;
+    margin-bottom: 5px;
 }
 
 #results {
     position: relative;
 }
+#results h4{
+    margin-top: 10px;
+}
 .results-wrapper {
     background-color: #f4f4f4;
+}
+.results-wrapper.error {
+    background-color: #f2dede;
+    border-color: #eed3d7;
 }
 .close {
     position: absolute;
     top: 6px;
     right: 8px;
-    font-size: 14px;
+    font-size: 13px;
 }
 #user-results {
     float: left;

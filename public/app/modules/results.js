@@ -19,23 +19,24 @@ function(app) {
         },
 
         initialize: function() {
-            var self = this;
             app.on('submit:answer', function (data) {
                 data.id = this.model.get('id');
                 this.model.clear();
                 this.model.set(data);
                 
-                // POST data to check results;
-                Backbone.sync('create', this.model).done(function (res) {
-                    self.model.set(res);
-                    self.render();
+                // POST data to check results
+                Backbone.sync('create', this.model).done(_.bind(function (res) {
+                    this.model.set(res);
+                    this.render();
                     app.models.questions.get(data.id).set({
                         correct: res.correct
                     });
                     if (res.correct) {
                         $('.pagination .active a').addClass('correct');
+                        $('#btn-next').css('display', 'block');
+                        this.areAllCorrect();
                     }
-                });
+                }, this));
             }, this);
         },
 
@@ -65,6 +66,13 @@ function(app) {
             }
 
             return data;
+        },
+
+        areAllCorrect: function() {
+            var questions_model = app.models.questions;
+            if (questions_model.where({ 'correct': true }).length === questions_model.length) {
+                console.log('all correct');
+            }
         },
 
         close: function() {

@@ -136,7 +136,8 @@ function(app, ace, Results) {
         className: 'question-item',
 
         events: {
-            'click #submit-answer': 'submitAnswer'
+            'click #submit-answer': 'submitAnswer',
+            'click #btn-next': 'nextQuestion'
         },
 
         beforeRender: function() {
@@ -169,6 +170,10 @@ function(app, ace, Results) {
                 });
             }
             this.editor.focus();
+        },
+
+        nextQuestion: function() {
+            app.models.questions.nextQuestion();
         }
     });
 

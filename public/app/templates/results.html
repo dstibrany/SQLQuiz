@@ -1,5 +1,5 @@
 {{#unless empty}}
-    <div class="well results-wrapper clearfix">
+    <div class="well results-wrapper clearfix {{#if user_error}}error{{/if}}">
         <span class="fui-cross close"></span>
     {{#if user_error}}
         <div id="user-error">
