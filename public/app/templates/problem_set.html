@@ -4,19 +4,7 @@
         <span class="ps-num">{{id}}</span>
         <span class="ps-name ps-name-large">{{name}} (6 questions)</span>
         <span class="ps-rating-num">{{#toDecimal rating}}{{/toDecimal}}</span>
-        <fieldset class="rating">
-            <!-- <legend>Difficulty</legend> -->
-            <input type="radio" {{#if_eq_round_down rating 5}}checked="checked"{{/if_eq_round_down}} disabled="disabled" name="rating-group-{{id}}" value="5" />
-            <label for="star5">5 stars</label>
-            <input type="radio" {{#if_eq_round_down rating 4}}checked="checked"{{/if_eq_round_down}} disabled="disabled" name="rating-group-{{id}}" value="4" />
-            <label for="star4">4 stars</label>
-            <input type="radio" {{#if_eq_round_down rating 3}}checked="checked"{{/if_eq_round_down}} disabled="disabled" name="rating-group-{{id}}" value="3" />
-            <label for="star3">3 stars</label>
-            <input type="radio" {{#if_eq_round_down rating 2}}checked="checked"{{/if_eq_round_down}} disabled="disabled" name="rating-group-{{id}}" value="2" />
-            <label for="star2">2 stars</label>
-            <input type="radio" {{#if_eq_round_down rating 1}}checked="checked"{{/if_eq_round_down}} disabled="disabled" name="rating-group-{{id}}" value="1" />
-            <label for="star1">1 star</label>
-        </fieldset>
+        <fieldset class="rating"></fieldset>
     </li>    
     {{/each}}
 </ul>

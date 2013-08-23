@@ -30,6 +30,14 @@ function (app) {
 
         serialize: function() {
             return this.collection.toJSON();
+        },
+
+        afterRender: function() {
+            this.collection.each(function (problem_set, i) {
+                this.$('.rating').eq(i).rateify({
+                    readOnly: problem_set.get('rating')
+                })
+            }, this);
         }
     });
 

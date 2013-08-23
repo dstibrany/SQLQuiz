@@ -185,9 +185,9 @@ caption {
 }
 .close {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 16px;
+    top: 6px;
+    right: 8px;
+    font-size: 14px;
 }
 #user-results {
     float: left;
@@ -200,6 +200,9 @@ caption {
 #user-error {
     color: #E74C3C;
     font-size: 18px;
+}
+#user-error p{
+    margin: 0;
 }
 .ps-name {
     color: #1ABC9C;

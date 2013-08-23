@@ -18,6 +18,9 @@ require.config({
         plugins: '../scripts/plugins',
         components: '../components',
 
+        // plugins'
+        rateify: '../scripts/plugins/rateify',
+
         // Libraries.
         jquery: '../components/jquery/jquery',
         lodash: '../components/lodash/dist/lodash.underscore',
@@ -43,8 +46,9 @@ require.config({
 
         handlebars: {
             exports: 'Handlebars'
-        }
+        },
 
+        rateify: ['jquery']
     }
 
 });

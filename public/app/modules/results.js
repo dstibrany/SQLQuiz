@@ -68,7 +68,7 @@ function(app) {
         },
 
         close: function() {
-            this.$el.find('.results-wrapper').hide();
+            this.$el.find('.results-wrapper').fadeOut();
             this.options.ace.edit('editor').focus();
         },
 

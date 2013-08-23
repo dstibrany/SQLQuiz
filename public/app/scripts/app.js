@@ -10,6 +10,7 @@ define([
 
     // Plugins.
     'layoutmanager',
+    'rateify',
     '../scripts/extensions/handlebars-ext'
 ],
 
