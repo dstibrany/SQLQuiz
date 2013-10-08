@@ -24,6 +24,11 @@ h4 {
     font-weight: bold;
 }
 
+h5 {
+    text-align: center;
+    margin: 15px 0;
+}
+
 ul {
     margin: 0;
 }
@@ -46,14 +51,11 @@ ul {
     font-size: 25px;
 }
 
-.container {
-    position: relative;
-}
-
 .pagination-container {
-    position: absolute;
-    top: -48px;
-    right: -15px;
+    float: right;
+    position: relative;
+    top: 5px;
+    right: -16px;
 }
 .pagination {
     margin: 0;
@@ -122,7 +124,7 @@ ul {
 
 .question-item .btn-answer {
     margin: 20px 0;
-    width: 100px;
+    width: 80px;
 }
 .question-item .btn-next {
     display: none;
@@ -218,6 +220,8 @@ caption {
 }
 .ps-name {
     color: #1ABC9C;
+    position: relative;
+    top: 2px;
 }
 
 #editor {
@@ -278,12 +282,25 @@ caption {
     margin-right: 10px;
 }
 
-/*.problem_set.odd .ps-num {
-    background: #34495E;
+.alert {
+    padding: 15px;
 }
-.problem_set.odd .ps-name {
-    color: #1ABC9C;
-}*/
+.alert-container {
+    width: 940px;
+    margin: 0 auto;
+}
+
+#vote .rating {
+    margin: 15px auto;
+    width: 168px;
+    float: none;
+}
+
+#vote .btn {
+    margin: 0 auto;
+    display: block;
+    width: 190px;
+}
 
 
 /*** rating plugin ***/
@@ -325,17 +342,17 @@ caption {
     text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
 }
 
-.rating:not(:checked) > label:hover,
-.rating:not(:checked) > label:hover ~ label {
+.rating:not(.read-only):not(:checked) > label:hover,
+.rating:not(.read-only):not(:checked) > label:hover ~ label {
     color: gold;
     text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
 }
 
-.rating > input:checked + label:hover,
-.rating > input:checked + label:hover ~ label,
-.rating > input:checked ~ label:hover,
-.rating > input:checked ~ label:hover ~ label,
-.rating > label:hover ~ input:checked ~ label {
+.rating:not(.read-only) > input:checked + label:hover,
+.rating:not(.read-only) > input:checked + label:hover ~ label,
+.rating:not(.read-only) > input:checked ~ label:hover,
+.rating:not(.read-only) > input:checked ~ label:hover ~ label,
+.rating:not(.read-only) > label:hover ~ input:checked ~ label {
     /*color: #ea0;*/
     color: gold;
     text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
@@ -345,4 +362,8 @@ caption {
     position:relative;
     top:2px;
     left:2px;
+}
+
+.clear {
+    clear: both;
 }

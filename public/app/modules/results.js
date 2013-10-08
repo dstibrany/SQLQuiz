@@ -1,8 +1,9 @@
 define([
-  "app"
+    'app',
+    '../modules/vote'
 ],
 
-function(app) {
+function(app, Vote) {
 
     var Results = app.module();
 
@@ -70,8 +71,8 @@ function(app) {
 
         areAllCorrect: function() {
             var questions_model = app.models.questions;
-            if (questions_model.where({ 'correct': true }).length === questions_model.length) {
-                console.log('all correct');
+            if (questions_model.where({ 'correct': true }).length === 1) {
+                questions_model.trigger('all_correct');
             }
         },
 

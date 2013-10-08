@@ -44,7 +44,6 @@
                         console.log('fail');
                     });
                 });
-                
             }
 
             this.generate(this.element, this.options);

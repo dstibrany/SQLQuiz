@@ -13,7 +13,8 @@ function(app, ace, Results) {
     Question.Collection = Backbone.Collection.extend({
         model: Question.Model,
 
-        url: app.apiRoot + '/problem_set/1/questions', // 1 is just a placeholder and will be dynamically replaced
+        // '1' is just a placeholder and will be dynamically replaced
+        url: app.apiRoot + '/problem_set/1/questions', 
         
         currentQuestion: 1,
 
@@ -43,9 +44,9 @@ function(app, ace, Results) {
         }
     });
 
-    Question.Views.Layout = Backbone.View.extend({
-        template: 'questionlayout',
-        className: 'question-layout',
+    Question.Views.Nav = Backbone.View.extend({
+        template: 'questionnav',
+        className: 'question-nav',
 
         events: {
             'click .next': 'nextQuestion',
@@ -64,17 +65,6 @@ function(app, ace, Results) {
             this.listenTo(this.collection, 'change:question', this.changeRoute);
         },
 
-        beforeRender: function() {
-            if (this.collection.length) {
-                this.insertView(new Question.Views.Item({
-                    insert: function(root, child) {
-                        $(root).prepend(child);
-                    },
-                    model: this.collection.at(this.collection.getCurrentQuestion() - 1)
-                }));
-            }
-        },
-
         afterRender: function() {
             this.collection.hover = false;
         },
@@ -84,7 +74,7 @@ function(app, ace, Results) {
 
             if (!this.collection.length) questions.empty = true;
 
-            for (var i = 1, len = this.collection.length; i <= len; i++ ) {
+            for (var i = 1, len = this.collection.length; i <= len; i++) {
                 questions.push({
                     questionNumber: i,
                     isActive: i === this.collection.getCurrentQuestion() ? true : false,
@@ -131,7 +121,7 @@ function(app, ace, Results) {
         }
     });
 
-    Question.Views.Item = Backbone.View.extend({
+    Question.Views.Question = Backbone.View.extend({
         template: 'question',
         className: 'question-item',
 
@@ -140,7 +130,13 @@ function(app, ace, Results) {
             'click #btn-next': 'nextQuestion'
         },
 
+        initialize: function() {
+            this.listenTo(this.collection, 'reset', this.render);
+            this.listenTo(this.collection, 'change:question', this.render);
+        },
+
         beforeRender: function() {
+            this.model = this.collection.at(this.collection.getCurrentQuestion() - 1);
             this.setView('#results-hook', new Results.Views.Layout({
                 model: new Results.Model({
                     id: this.model.get('id')
