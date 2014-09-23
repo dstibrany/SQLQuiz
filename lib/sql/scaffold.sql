@@ -1,5 +1,5 @@
-DROP TABLE questions;
-DROP TABLE problem_sets;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS problem_sets;
 
 CREATE TABLE IF NOT EXISTS problem_sets (
     id mediumint NOT NULL AUTO_INCREMENT,
