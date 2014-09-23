@@ -8,7 +8,7 @@
     "url": "git@github.com:dstibrany/SQLQuiz.git"
   },
   "dependencies" : {
-    "express" : "",
+    "express" : "3.x.x",
     "mysql"   : "2.0.0-alpha8",
     "jade"    : "",
     "async"   : "",
