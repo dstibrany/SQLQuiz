@@ -1,6 +1,6 @@
 var fs      = require('fs');
 fs.readdirSync('env').forEach(function (file) {
-    process.env[file] = fs.readFileSync('env/' + file).toString();
+    process.env[file] = fs.readFileSync('env/' + file).toString().replace(/\n|\r/g, '');
 });
 
 var util    = require('util');
