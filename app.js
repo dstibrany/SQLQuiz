@@ -109,7 +109,7 @@ app.get('/api/problem_set/:id', function (req, res) {
 app.get('/api/problem_set/:id/questions', function (req, res) {
     var sql = 'SELECT questions.*\
                FROM problem_sets JOIN questions\
-               ON problem_sets.id = Questions.problem_set_id\
+               ON problem_sets.id = questions.problem_set_id\
                AND problem_sets.id = ?';
 
     db.query(sql, [req.params.id], function (err, rows) {
