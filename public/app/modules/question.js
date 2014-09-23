@@ -14,8 +14,8 @@ function(app, ace, Results) {
         model: Question.Model,
 
         // '1' is just a placeholder and will be dynamically replaced
-        url: app.apiRoot + '/problem_set/1/questions', 
-        
+        url: app.apiRoot + '/problem_set/1/questions',
+
         currentQuestion: 1,
 
         hover: false,
@@ -92,9 +92,9 @@ function(app, ace, Results) {
         },
 
         changeRoute: function() {
-            var route = '/problem_set/' 
-                        + app.state.problem_set 
-                        + '/question/' 
+            var route = '/problem_set/'
+                        + app.state.problem_set
+                        + '/question/'
                         + this.collection.getCurrentQuestion();
             Backbone.history.navigate(route);
             this.render();
@@ -156,7 +156,7 @@ function(app, ace, Results) {
         serialize: function() {
             return this.model.toJSON();
         },
-        
+
         submitAnswer: function() {
             var userAnswer = this.editor.getValue();
             if (userAnswer.trim()) {

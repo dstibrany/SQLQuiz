@@ -26,8 +26,12 @@ function(Handlebars) {
             return block(this);
     });
 
-    Handlebars.registerHelper('toDecimal', function(num) {
-        return num.toFixed(1);
+    Handlebars.registerHelper('rating', function(num_votes, votes_total) {
+        var rating;
+        if (num_votes === 0) {
+            return 0;
+        }
+        return (votes_total / num_votes).toFixed(1);
     });
 
 });

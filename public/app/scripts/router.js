@@ -62,14 +62,14 @@ function (app, Backbone, Problem_Set, Question, Relation, Header, Vote) {
                 }),
                 "#relations": new Relation.Views.List({
                     collection: relations
-                }),
-                "#vote": new Vote.Views.Layout({
-                    collection: questions
                 })
             }).render();
 
             layout.insertViews({
                 "#question": new Question.Views.Question({
+                    collection: questions
+                }),
+                "#vote": new Vote.Views.Layout({
                     collection: questions
                 })
             });
@@ -82,6 +82,7 @@ function (app, Backbone, Problem_Set, Question, Relation, Header, Vote) {
     
             questions.setURL(id);
             questions.fetch({ reset: true });
+            
         }
     });
 
