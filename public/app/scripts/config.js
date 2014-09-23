@@ -23,7 +23,7 @@ require.config({
 
         // Libraries.
         jquery: '../components/jquery/jquery',
-        lodash: '../components/lodash/lodash',
+        lodash: '../components/lodash/lodash.underscore',
         backbone: '../components/backbone/backbone',
         handlebars: '../components/handlebars/handlebars',
         layoutmanager: '../components/layoutmanager/backbone.layoutmanager'
