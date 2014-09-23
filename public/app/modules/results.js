@@ -20,11 +20,12 @@ function(app, Vote) {
         },
 
         initialize: function() {
+            app.off('submit:answer');
             app.on('submit:answer', function (data) {
                 data.id = this.model.get('id');
                 this.model.clear();
                 this.model.set(data);
-                
+
                 // POST data to check results
                 Backbone.sync('create', this.model).done(_.bind(function (res) {
                     this.model.set(res);
@@ -43,7 +44,7 @@ function(app, Vote) {
 
         serialize: function() {
             var data = this.model.toJSON();
-            
+
             if (data.user_error) {
                 data.user_error = data.user_error.replace(/SQLITE_ERROR/, "DB_ERROR");
                 return data;
@@ -71,7 +72,7 @@ function(app, Vote) {
 
         areAllCorrect: function() {
             var questions_model = app.models.questions;
-            if (questions_model.where({ 'correct': true }).length === 1) {
+            if (questions_model.where({ 'correct': true }).length === questions_model.length) {
                 questions_model.trigger('all_correct');
             }
         },
@@ -79,10 +80,6 @@ function(app, Vote) {
         close: function() {
             this.$el.find('.results-wrapper').fadeOut();
             this.options.ace.edit('editor').focus();
-        },
-
-        cleanup: function() {
-            app.off('submit:answer');
         }
 
     });
