@@ -4,7 +4,8 @@ DROP TABLE problem_sets;
 CREATE TABLE IF NOT EXISTS problem_sets (
     id mediumint NOT NULL AUTO_INCREMENT,
     name varchar(255) NOT NULL,
-    rating DEC(2, 1) UNSIGNED,
+    num_votes mediumint DEFAULT 0,
+    votes_total mediumint DEFAULT 0,
 
     PRIMARY KEY (id)
 );
