@@ -35,7 +35,7 @@ function (app) {
         afterRender: function() {
             this.collection.each(function (problem_set, i) {
                 this.$('.rating').eq(i).rateify({
-                    readOnly: problem_set.get('rating')
+                    readOnly: problem_set.get('votes_total') / problem_set.get('num_votes')
                 })
             }, this);
         }

@@ -3,7 +3,7 @@
     <li class="problem_set well" data-id="{{id}}">
         <span class="ps-num">{{id}}</span>
         <span class="ps-name ps-name-large">{{name}} (6 questions)</span>
-        <span class="ps-rating-num">{{#toDecimal rating}}{{/toDecimal}}</span>
+        <span class="ps-rating-num">{{#rating num_votes votes_total}}{{/rating}}</span>
         <fieldset class="rating"></fieldset>
     </li>    
     {{/each}}
