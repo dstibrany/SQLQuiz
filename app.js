@@ -57,11 +57,11 @@ app.post('/api/checkAnswer/:questionid', function (req, res) {
                     err.userError = true;
                     return cb(err);
                 }
-                    
+
                 cb(null, rows);
             });
         }
-    ], 
+    ],
     function (err, results) {
         if (err) return error_handler(err, res);
         var out = {
@@ -74,7 +74,7 @@ app.post('/api/checkAnswer/:questionid', function (req, res) {
         } else {
             out.correct = false;
         }
-        
+
         res.json(out);
     });
 });
@@ -95,7 +95,7 @@ app.get('/api/problem_set/:id', function (req, res) {
 
     var uuid    = utils.uuid();
     var user_db = new User_DB(req.params.id);
-    
+
     user_db_map[uuid] = user_db;
 
     user_db.load(function (err) {
@@ -122,7 +122,7 @@ app.get('/api/problem_set/:id/questions', function (req, res) {
 app.get('/api/problem_set/:id/relations', function (req, res) {
     var uuid = req.cookies && req.cookies.SQLQUIZ_UUID;
     if (!uuid) res.send(500);
-    
+
     var user_db = user_db_map[uuid];
     var out = [];
 
@@ -144,7 +144,7 @@ app.get('/api/problem_set/:id/relations', function (req, res) {
                         inner_cb(null, table_columns);
                     });
                 },
-            ], 
+            ],
             function (err, results) {
                 if (err) return outer_cb(err);
                 var fks     = results[0];
@@ -158,7 +158,7 @@ app.get('/api/problem_set/:id/relations', function (req, res) {
 
                 // add foreign key object to respective column
                 fks.forEach(function (fk) {
-                    columns_hash_table[fk.from]['fk'] = fk; 
+                    columns_hash_table[fk.from]['fk'] = fk;
                 });
 
                 out.push({
@@ -168,7 +168,7 @@ app.get('/api/problem_set/:id/relations', function (req, res) {
 
                 outer_cb(null);
             });
-        
+
         }, function (err) {
             if (err) return error_handler(err, res);
             res.json(out);
@@ -176,7 +176,18 @@ app.get('/api/problem_set/:id/relations', function (req, res) {
     });
 });
 
+app.post('/api/vote/:problem_set_id', function (req, res) {
+    var sql = 'UPDATE problem_sets\
+              SET num_votes = num_votes + 1,\
+              votes_total = votes_total + ?\
+              WHERE problem_sets.id = ?';
+
+    db.query(sql, [req.body.rating, req.params.problem_set_id], function (err, rows) {
+        if (err) return error_handler(err, res);
+        res.json(rows);
+    });
+});
+
 app.listen(8999, function() {
     console.log('Listening on http://localhost:8999');
 });
-
