@@ -1,0 +1,6 @@
+- bug in how rows are stored in object (javascript hashes can clober DB result set)
+- add more problem sets
+- be able to handle insertions and deletes (may need two sqlite instances)
+- docker for security
+- get frontend assets production ready
+- scaffolding dbs
